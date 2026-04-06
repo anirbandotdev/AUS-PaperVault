@@ -311,9 +311,10 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: var(--color-vault-success);
+  background: var(--color-vault-online);
   border: 2px solid var(--color-vault-dark);
-  box-shadow: 0 0 8px rgba(74, 222, 128, 0.4);
+  box-shadow: 0 0 8px rgba(74, 222, 81, 0.4);
+  z-index: 2;
 }
 
 .dev-name {
