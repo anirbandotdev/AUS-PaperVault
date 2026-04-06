@@ -1,0 +1,232 @@
+.hero-section {
+  position: relative;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 4rem 0 3rem;
+}
+
+/* ───── Background Grid ───── */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(175, 179, 247, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(175, 179, 247, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridPulse 4s ease-in-out infinite;
+}
+
+.hero-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(175, 179, 247, 0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 50%, rgba(146, 188, 234, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(122, 147, 172, 0.04) 0%, transparent 50%);
+}
+
+.hero-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(175, 179, 247, 0.2), transparent);
+  animation: scanline 5s linear infinite;
+}
+
+.hero-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(13, 15, 20, 0.7) 100%);
+}
+
+/* ───── Floating Orbs ───── */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.15;
+  animation: float 6s ease-in-out infinite;
+}
+
+.hero-orb-1 {
+  width: 300px;
+  height: 300px;
+  background: var(--color-vault-lavender);
+  top: -50px;
+  right: 10%;
+  animation-delay: 0s;
+}
+
+.hero-orb-2 {
+  width: 200px;
+  height: 200px;
+  background: var(--color-vault-blue);
+  bottom: 10%;
+  left: 5%;
+  animation-delay: 2s;
+}
+
+.hero-orb-3 {
+  width: 150px;
+  height: 150px;
+  background: var(--color-vault-steel);
+  top: 40%;
+  left: 60%;
+  animation-delay: 4s;
+}
+
+/* ───── Content ───── */
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-vault-lavender);
+  background: rgba(175, 179, 247, 0.08);
+  border: 1px solid rgba(175, 179, 247, 0.2);
+  margin-bottom: 1.5rem;
+  animation: slideUp 0.6s ease-out;
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-vault-lavender);
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #fff;
+  margin-bottom: 1rem;
+  animation: slideUp 0.6s ease-out 0.1s both;
+}
+
+.hero-title-accent {
+  color: var(--color-vault-lavender);
+  text-shadow: 0 0 30px rgba(175, 179, 247, 0.3);
+}
+
+.hero-subtitle {
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  color: var(--color-vault-steel);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 560px;
+  animation: slideUp 0.6s ease-out 0.2s both;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  animation: slideUp 0.6s ease-out 0.3s both;
+}
+
+/* ───── Right side visual ───── */
+.hero-visual {
+  display: none;
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 1024px) {
+  .hero-section {
+    padding: 5rem 0 4rem;
+  }
+
+  .hero-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.hero-card-stack {
+  position: relative;
+  width: 280px;
+  height: 340px;
+}
+
+.hero-float-card {
+  position: absolute;
+  width: 240px;
+  padding: 1.25rem;
+  background: rgba(28, 32, 41, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(175, 179, 247, 0.15);
+  animation: float 4s ease-in-out infinite;
+}
+
+.hero-float-card:nth-child(1) {
+  top: 0;
+  left: 0;
+  transform: rotate(-3deg);
+  animation-delay: 0s;
+}
+
+.hero-float-card:nth-child(2) {
+  top: 60px;
+  left: 40px;
+  transform: rotate(2deg);
+  animation-delay: 1s;
+}
+
+.hero-float-card:nth-child(3) {
+  top: 120px;
+  left: 10px;
+  transform: rotate(-1deg);
+  animation-delay: 2s;
+}
+
+.hero-float-card-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-vault-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.35rem;
+}
+
+.hero-float-card-title {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-vault-lavender);
+  margin-bottom: 0.5rem;
+}
+
+.hero-float-card-bar {
+  height: 3px;
+  background: rgba(175, 179, 247, 0.2);
+  border-radius: 2px;
+  margin-bottom: 0.3rem;
+}
+
+.hero-float-card-bar.short {
+  width: 60%;
+}

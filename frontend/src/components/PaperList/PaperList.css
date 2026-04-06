@@ -1,0 +1,216 @@
+.paper-list {
+  margin-top: 1rem;
+}
+
+.paper-list-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .paper-list-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.paper-list-title {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-vault-steel);
+}
+
+/* ───── Year Tabs ───── */
+.year-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.year-tab {
+  padding: 0.4rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--color-vault-gray);
+  background: rgba(28, 32, 41, 0.8);
+  border: 1px solid rgba(122, 147, 172, 0.1);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.year-tab:hover {
+  color: var(--color-vault-steel);
+  border-color: rgba(122, 147, 172, 0.3);
+}
+
+.year-tab.active {
+  color: var(--color-vault-dark);
+  background: var(--color-vault-lavender);
+  border-color: var(--color-vault-lavender);
+  box-shadow: 0 0 12px rgba(175, 179, 247, 0.3);
+}
+
+.year-tab-all {
+  padding: 0.4rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--color-vault-gray);
+  background: rgba(28, 32, 41, 0.8);
+  border: 1px solid rgba(122, 147, 172, 0.1);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.year-tab-all:hover {
+  color: var(--color-vault-steel);
+  border-color: rgba(122, 147, 172, 0.3);
+}
+
+.year-tab-all.active {
+  color: var(--color-vault-lavender);
+  border-color: rgba(175, 179, 247, 0.4);
+  background: rgba(175, 179, 247, 0.08);
+}
+
+/* ───── Paper Cards ───── */
+.paper-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.paper-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: rgba(28, 32, 41, 0.7);
+  border: 1px solid rgba(122, 147, 172, 0.08);
+  transition: all 0.3s ease;
+}
+
+.paper-card:hover {
+  background: rgba(28, 32, 41, 0.9);
+  border-color: rgba(175, 179, 247, 0.2);
+  box-shadow: 4px 4px 0 rgba(175, 179, 247, 0.08);
+  transform: translateX(4px);
+}
+
+.paper-card-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(175, 179, 247, 0.08);
+  border: 1px solid rgba(175, 179, 247, 0.12);
+  flex-shrink: 0;
+}
+
+.paper-card-icon svg {
+  color: var(--color-vault-lavender);
+  width: 20px;
+  height: 20px;
+}
+
+.paper-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.paper-card-subject {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #e2e8f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.paper-card-meta {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.2rem;
+}
+
+.paper-card-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  color: var(--color-vault-gray);
+}
+
+.paper-card-tag span {
+  color: var(--color-vault-steel);
+}
+
+.paper-card-download {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-vault-lavender);
+  background: rgba(175, 179, 247, 0.06);
+  border: 1px solid rgba(175, 179, 247, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.paper-card-download:hover {
+  background: rgba(175, 179, 247, 0.12);
+  border-color: var(--color-vault-lavender);
+  box-shadow: 0 0 15px rgba(175, 179, 247, 0.15);
+}
+
+/* ───── Empty State ───── */
+.paper-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--color-vault-gray);
+}
+
+.paper-empty-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  background: rgba(175, 179, 247, 0.04);
+  border: 1px dashed rgba(122, 147, 172, 0.2);
+}
+
+.paper-empty-icon svg {
+  color: var(--color-vault-gray);
+  width: 28px;
+  height: 28px;
+  opacity: 0.5;
+}
+
+.paper-empty-text {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.paper-empty-sub {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-vault-gray);
+  opacity: 0.7;
+}

@@ -1,0 +1,87 @@
+.semester-selector {
+  margin-bottom: 2rem;
+}
+
+.semester-selector-title {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-vault-steel);
+  margin-bottom: 1rem;
+}
+
+.semester-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.semester-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  background: rgba(28, 32, 41, 0.9);
+  border: 2px solid rgba(122, 147, 172, 0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--color-vault-steel);
+}
+
+.semester-btn:hover {
+  border-color: rgba(175, 179, 247, 0.4);
+  background: rgba(175, 179, 247, 0.06);
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 rgba(175, 179, 247, 0.15);
+}
+
+.semester-btn.active {
+  border-color: var(--color-vault-lavender);
+  background: rgba(175, 179, 247, 0.1);
+  color: var(--color-vault-lavender);
+  box-shadow: 4px 4px 0 var(--color-vault-lavender);
+}
+
+.semester-btn-num {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.semester-btn-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+  opacity: 0.7;
+}
+
+.semester-btn-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  background: var(--color-vault-lavender);
+  color: var(--color-vault-dark);
+}
+
+@media (min-width: 640px) {
+  .semester-btn {
+    width: 80px;
+    height: 80px;
+  }
+}

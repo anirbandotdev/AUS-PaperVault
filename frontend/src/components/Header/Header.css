@@ -1,0 +1,221 @@
+.header-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header {
+  background: rgba(13, 15, 20, 0.85);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 1px solid rgba(175, 179, 247, 0.12);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+}
+
+/* ───── Logo ───── */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logo-icon-box {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(175, 179, 247, 0.15), rgba(146, 188, 234, 0.1));
+  border: 1px solid rgba(175, 179, 247, 0.3);
+}
+
+.logo-icon-box svg {
+  color: var(--color-vault-lavender);
+  width: 22px;
+  height: 22px;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo-main {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #fff;
+}
+
+.logo-main .logo-accent {
+  color: var(--color-vault-lavender);
+}
+
+.logo-sub {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: var(--color-vault-gray);
+  text-transform: uppercase;
+}
+
+/* ───── Stats Banner ───── */
+.header-stats {
+  display: none;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .header-stats {
+    display: flex;
+  }
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(175, 179, 247, 0.06);
+  border: 1px solid rgba(175, 179, 247, 0.12);
+}
+
+.stat-icon {
+  color: var(--color-vault-lavender);
+  width: 16px;
+  height: 16px;
+}
+
+.stat-value {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-vault-lavender);
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-vault-gray);
+}
+
+/* ───── Navigation ───── */
+.header-nav {
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .header-nav {
+    display: flex;
+  }
+}
+
+.nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.85rem;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-vault-steel);
+  text-decoration: none;
+  transition: all 0.25s ease;
+  border: 1px solid transparent;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--color-vault-lavender);
+  background: rgba(175, 179, 247, 0.06);
+  border-color: rgba(175, 179, 247, 0.15);
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-vault-lavender);
+  box-shadow: 0 0 8px rgba(175, 179, 247, 0.5);
+}
+
+/* ───── Mobile Menu Button ───── */
+.mobile-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(175, 179, 247, 0.06);
+  border: 1px solid rgba(175, 179, 247, 0.15);
+  color: var(--color-vault-lavender);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.mobile-menu-btn:hover {
+  background: rgba(175, 179, 247, 0.12);
+}
+
+@media (min-width: 768px) {
+  .mobile-menu-btn {
+    display: none;
+  }
+}
+
+/* ───── Mobile Menu ───── */
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  padding: 0.5rem 0 1rem;
+  border-top: 1px solid rgba(175, 179, 247, 0.08);
+  animation: slideUp 0.3s ease-out;
+}
+
+.mobile-menu.open {
+  display: flex;
+}
+
+@media (min-width: 768px) {
+  .mobile-menu {
+    display: none !important;
+  }
+}
+
+.mobile-menu .nav-link {
+  width: 100%;
+  padding: 0.75rem 1rem;
+}
+
+.mobile-stats {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem 0;
+}
+
+@media (min-width: 768px) {
+  .mobile-stats {
+    display: none;
+  }
+}

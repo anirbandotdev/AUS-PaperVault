@@ -1,0 +1,47 @@
+.dept-page {
+  padding-bottom: 4rem;
+}
+
+.dept-page-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, rgba(28, 32, 41, 0.8) 0%, rgba(23, 26, 33, 0.9) 100%);
+  border: 1px solid rgba(122, 147, 172, 0.12);
+  border-left: 3px solid var(--color-vault-lavender);
+}
+
+.dept-page-icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(175, 179, 247, 0.06);
+  border: 1px solid rgba(175, 179, 247, 0.12);
+  flex-shrink: 0;
+}
+
+.dept-page-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.dept-page-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.dept-page-short {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--color-vault-gray);
+  text-transform: uppercase;
+  margin-top: 0.15rem;
+}
