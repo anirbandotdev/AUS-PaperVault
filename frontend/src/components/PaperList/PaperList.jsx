@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { FileText, Download, FolderOpen, Eye, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Tilt from "react-parallax-tilt";
-import { YEARS } from "../../data/departments";
+import departments, { YEARS } from "../../data/departments";
 import { getAllPapers } from "../../data/mockPapers";
 import "./PaperList.css";
 
@@ -84,6 +84,8 @@ export default function PaperList({
               transitionSpeed={400}
               tiltMaxAngleX={3}
               tiltMaxAngleY={3}
+              glareBorderRadius="8px"
+              style={{ borderRadius: "8px" }}
             >
               <div className="paper-card">
                 <div className="paper-card-icon">

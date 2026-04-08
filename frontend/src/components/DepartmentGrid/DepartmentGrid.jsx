@@ -218,7 +218,8 @@ export default function DepartmentGrid() {
                 transitionSpeed={400}
                 tiltMaxAngleX={5}
                 tiltMaxAngleY={5}
-                style={{ height: "100%" }} // Ensures the tilt container takes full height
+                glareBorderRadius="12px"
+                style={{ height: "100%", borderRadius: "12px" }} // Ensures the tilt container takes full height and has rounded corners
               >
                 <Link
                   to={`/department/${dept.id}`}
