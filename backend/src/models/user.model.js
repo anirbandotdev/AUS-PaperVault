@@ -41,6 +41,12 @@ const userSchema = new mongoose.Schema(
             required: [true, "Password is required"],
             minlength: 6,
         },
+        refreshToken: {
+            type: String,
+        },
+        refreshTokenExpiry: {
+            type: Number,
+        },
     },
     {
         timestamps: true,
@@ -56,6 +62,10 @@ userSchema.pre("save", async function () {
     } catch (err) {
         console.log(err);
     }
+});
+
+userSchema.pre("save", async function () {
+    this.refreshTokenExpiry = Date.now() + 7 * 24 * 60 * 60 * 1000;
 });
 
 userSchema.methods.comparePassword = async function (password) {
