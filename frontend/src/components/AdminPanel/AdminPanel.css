@@ -1279,6 +1279,37 @@ select.admin-form-input option {
   box-shadow: 0 2px 8px rgba(175, 179, 247, 0.15);
 }
 
+.admin-dept-card-delete {
+  position: absolute;
+  top: 8px;
+  right: 40px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  border-radius: 4px;
+  color: var(--color-vault-danger);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0;
+}
+
+.admin-dept-card:hover .admin-dept-card-delete {
+  opacity: 1;
+  background: rgba(248, 113, 113, 0.2);
+  border-color: rgba(248, 113, 113, 0.4);
+}
+
+.admin-dept-card-delete:hover {
+  background: rgba(248, 113, 113, 0.3);
+  border-color: rgba(248, 113, 113, 0.5);
+  box-shadow: 0 2px 8px rgba(248, 113, 113, 0.15);
+}
+
 .admin-no-departments {
   grid-column: 1 / -1;
   display: flex;

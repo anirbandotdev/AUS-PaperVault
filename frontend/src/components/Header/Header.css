@@ -34,11 +34,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-    135deg,
-    rgba(175, 179, 247, 0.15),
-    rgba(146, 188, 234, 0.1)
-  );
+  background: linear-gradient(135deg, rgba(175, 179, 247, 0.15), rgba(146, 188, 234, 0.1));
   border: 1px solid rgba(175, 179, 247, 0.3);
 }
 
@@ -154,7 +150,7 @@
 }
 
 .nav-link.active::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -1px;
   left: 0;
@@ -388,22 +384,14 @@
 }
 
 .signup-btn {
-  background: linear-gradient(
-    135deg,
-    rgba(175, 179, 247, 0.2),
-    rgba(146, 188, 234, 0.15)
-  );
+  background: linear-gradient(135deg, rgba(175, 179, 247, 0.2), rgba(146, 188, 234, 0.15));
   border: 1px solid rgba(175, 179, 247, 0.3);
   color: #fff;
   font-weight: 700;
 }
 
 .signup-btn:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(175, 179, 247, 0.3),
-    rgba(146, 188, 234, 0.25)
-  );
+  background: linear-gradient(135deg, rgba(175, 179, 247, 0.3), rgba(146, 188, 234, 0.25));
   border-color: rgba(175, 179, 247, 0.5);
   box-shadow: 0 0 16px rgba(175, 179, 247, 0.3);
 }
@@ -421,7 +409,7 @@
   .user-menu-btn .user-name {
     display: none;
   }
-
+  
   .user-menu-btn {
     padding: 0.5rem;
     width: 40px;

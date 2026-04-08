@@ -118,14 +118,14 @@ export default function Header() {
                   title={`Logged in as ${user.emailOrUsername}`}
                 >
                   <UserIcon size={18} />
-                  <span className="user-name">{user.emailOrUsername}</span>
+                  <span className="user-name">{user.username}</span>
                 </button>
                 {userMenuOpen && (
                   <div className="user-dropdown">
                     <div className="user-info">
                       <UserIcon size={16} />
                       <div className="user-details">
-                        <p className="user-email">{user.emailOrUsername}</p>
+                        <p className="user-email">{user.email}</p>
                         <p className="user-name-small">Logged in</p>
                       </div>
                     </div>

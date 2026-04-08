@@ -60,8 +60,8 @@ const developers = [
     image: Niigadyut,
     role: 'Full Stack Developer',
     dept: 'CSE, TSSOT',
-    bio: 'Architecting the backend and frontend integration. Passionate about tools that help students succeed.',
-    skills: ['React', 'Node.js', 'MongoDB', 'REST APIs'],
+    bio: 'Front bencher in class and back bencher in life ',
+    skills: ['React', 'Node.js', 'MongoDB', 'Tailwind'],
     socials: {
       github: 'https://github.com/BidyutDev',
       linkedin: 'https://www.linkedin.com/in/bidyut-priyam-kumar/',
@@ -74,8 +74,8 @@ const developers = [
     image: Mehehe,
     role: 'Frontend & UI Designer',
     dept: 'CSE, TSSOT',
-    bio: 'Crafting pixel-perfect interfaces with a love for design systems, animations, and sharp aesthetics.',
-    skills: ['React', 'CSS/Tailwind', 'Figma', 'Motion'],
+    bio: 'A mardarchod pedo',
+    skills: ['React', 'Tailwind', 'Figma', 'Motion'],
     socials: {
       github: 'https://github.com/kamiism',
       linkedin: 'https://www.linkedin.com/in/nilanjan-kumar-roy-186260380/',
@@ -88,8 +88,8 @@ const developers = [
     image: Adih,
     role: 'Backend Developer',
     dept: 'CSE, TSSOT',
-    bio: 'Database wizard and API architect. Making sure every paper is stored safely and served fast.',
-    skills: ['Python', 'Express', 'PostgreSQL', 'Docker'],
+    bio: 'A BDSM enthusiast',
+    skills: ['Python', 'Express', 'PostgreSQL', 'Docker', 'Linux'],
     socials: {
       github: 'https://github.com/anirbandotdev',
       linkedin: 'https://www.linkedin.com/in/anirban-nath-42a63b25b/',
@@ -102,7 +102,7 @@ const developers = [
     image: Bubbly,
     role: 'Logo Designer',
     dept: 'CSE, TSSOT',
-    bio: 'A catfisher',
+    bio: 'A lauda lehsun',
     skills: ['Canva', 'Figma'],
     socials: {
       github: '#',
