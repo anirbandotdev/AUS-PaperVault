@@ -3,6 +3,7 @@ import { CORS_ORIGIN, PORT } from "./config.js";
 import router from "./routers/router.js";
 import cors from "cors";
 import connectDB from "./db/db.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(
         origin: CORS_ORIGIN,
     })
 );
+app.use(cookieParser());
 
 app.use("/api/v1", router);
 

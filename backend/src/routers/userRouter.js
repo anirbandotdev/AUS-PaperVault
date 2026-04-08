@@ -7,8 +7,60 @@ import {
     generateAccessToken,
     generateRefreshToken,
 } from "../utils/generateToken.js";
+import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const userRouter = Router();
+
+userRouter.post("/request-token", async (req, res) => {
+    try {
+        const refreshToken = req.cookies.refreshToken;
+
+        if (!refreshToken) {
+            return sendError(
+                res,
+                "No refresh token provided",
+                STATUS_CODES.FORBIDDEN
+            );
+        }
+        const user = await User.findOne({ refreshToken });
+        if (!user) {
+            return sendError(
+                res,
+                "Invalid refresh token",
+                STATUS_CODES.FORBIDDEN
+            );
+        }
+
+        if (user.refreshTokenExpiry && user.refreshTokenExpiry < Date.now()) {
+            user.refreshToken = null;
+            user.refreshTokenExpiry = null;
+            await user.save();
+            return sendError(
+                res,
+                "Refresh token expired. Please login again.",
+                STATUS_CODES.FORBIDDEN
+            );
+        }
+
+        const newAccessToken = generateAccessToken({
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+        });
+
+        sendSuccess(res, "New access token generated", STATUS_CODES.SUCCESS, {
+            token: newAccessToken,
+        });
+    } catch (err) {
+        console.log(err);
+        sendError(
+            res,
+            "Error in generating refresh token",
+            STATUS_CODES.SERVER_ERROR,
+            err
+        );
+    }
+});
 
 userRouter.post("/register", async (req, res) => {
     try {
@@ -33,6 +85,13 @@ userRouter.post("/register", async (req, res) => {
         const refreshToken = generateRefreshToken({
             username,
             email,
+        });
+
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
         const newUser = await User.create({
@@ -96,6 +155,13 @@ userRouter.post("/login", async (req, res) => {
         user.refreshToken = generateRefreshToken({
             username: user.username,
             email: user.email,
+        });
+
+        res.cookie("refreshToken", user.refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
         await user.save();
