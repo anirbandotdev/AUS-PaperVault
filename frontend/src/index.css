@@ -39,6 +39,7 @@ html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--color-vault-steel) var(--color-vault-dark);
+  overflow-x: hidden;
 }
 
 body {

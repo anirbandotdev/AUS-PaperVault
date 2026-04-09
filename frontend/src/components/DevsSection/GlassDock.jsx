@@ -1,5 +1,5 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../lib/utils';
 import './GlassDock.css';
 
@@ -50,7 +50,7 @@ export const GlassDock = React.forwardRef(
                   className={cn(
                     'px-5 py-2 rounded-lg',
                     'shadow-md flex items-center justify-center glass-dock-tooltip',
-                    'min-w-[100px] '
+                    'min-w-25 '
                   )}
                 >
                   <div className="relative h-4 flex items-center justify-center overflow-hidden w-full">
