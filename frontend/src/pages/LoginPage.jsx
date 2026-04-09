@@ -5,6 +5,7 @@ import { Mail, ArrowRight, Lock } from "lucide-react";
 import { motion } from "framer-motion";
 import AuthLayout from "../components/AuthLayout/AuthLayout";
 import "./LoginPage.css";
+import { apiFetch } from "../api/api";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -21,9 +22,7 @@ export default function LoginPage() {
     return <Navigate to={from} replace />;
   }
 
-
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -52,18 +51,26 @@ export default function LoginPage() {
     }
 
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      try {
-        login(email.trim(), password.trim());
-        setIsLoading(false);
+
+    try {
+      const data = await apiFetch("/user/login", "POST", {
+        body: {
+          identifier: email,
+          password: password,
+        },
+      });
+      if (!data.success) {
+        setError("Login failed. Please try again.");
+      } else {
+        localStorage.setItem("access_token", data.token);
         const from = location.state?.from?.pathname || "/";
         navigate(from);
-      } catch (err) {
-        setError("Login failed. Please try again.");
-        setIsLoading(false);
       }
-    }, 800);
+    } catch (err) {
+      setError("Login failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

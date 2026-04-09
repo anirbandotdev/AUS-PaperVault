@@ -4,12 +4,12 @@ export const sendSuccess = (
     res,
     message = "Success",
     status = STATUS_CODES.SUCCESS,
-    data = null
+    data = {}
 ) => {
     return res.status(status).json({
         success: true,
         message,
-        data,
+        ...data,
     });
 };
 

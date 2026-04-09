@@ -15,6 +15,7 @@ import {
 import { motion } from "framer-motion";
 import AuthLayout from "../components/AuthLayout/AuthLayout";
 import "./SignUpPage.css";
+import { apiFetch } from "../api/api";
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -114,7 +115,7 @@ export default function SignUpPage() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = validateForm();
@@ -125,25 +126,29 @@ export default function SignUpPage() {
 
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      try {
-        signup({
+    try {
+      const data = await apiFetch("/user/register", "POST", {
+        body: {
           firstName: formData.firstName.trim(),
           lastName: formData.lastName.trim(),
           username: formData.username.trim(),
           email: formData.email.trim(),
           phoneNumber: formData.phoneNumber.replace(/\D/g, ""),
-          password: formData.password,
-        });
+          password: formData.password.trim(),
+        },
+      });
 
-        navigate("/");
-      } catch (err) {
+      if (!data.success) {
         setErrors({ submit: "Sign up failed. Please try again." });
-      } finally {
-        setIsLoading(false);
+      } else {
+        localStorage.setItem("access_token", data.token);
+        navigate("/");
       }
-    }, 1000);
+    } catch (err) {
+      setErrors({ submit: "Sign up failed. Please try again." });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const getPasswordStrengthLabel = () => {
@@ -155,8 +160,6 @@ export default function SignUpPage() {
     const colors = ["#64748b", "#ef4444", "#f97316", "#eab308", "#22c55e"];
     return colors[passwordStrength] || colors[0];
   };
-
-
 
   return (
     <AuthLayout>
