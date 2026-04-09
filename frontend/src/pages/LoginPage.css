@@ -117,6 +117,12 @@
   font-size: 0.85rem;
 }
 
+@media (max-width: 640px) {
+  .form-input {
+    width: 100%;
+  }
+}
+
 .form-input::placeholder {
   color: rgba(175, 179, 247, 0.4);
 }

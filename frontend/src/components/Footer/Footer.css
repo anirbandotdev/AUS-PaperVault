@@ -79,7 +79,14 @@
 /* ───── Links Column ───── */
 .footer-links-group {
   display: flex;
-  gap: 3rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .footer-links-group {
+    gap: 3rem;
+  }
 }
 
 .footer-links-col h4 {
