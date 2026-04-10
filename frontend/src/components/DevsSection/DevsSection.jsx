@@ -62,7 +62,7 @@ const developers = [
     role: 'Full Stack Developer',
     dept: 'CSE, TSSOT',
     bio: 'Turning caffeine into robust architectures and seamless experiences.',
-    skills: ['React', 'Node.js', 'MongoDB', 'Tailwind'],
+    skills: ['React', 'Tailwind', 'Node.js', 'MongoDB', 'Express', 'Linux'],
     socials: {
       github: 'https://github.com/BidyutDev',
       linkedin: 'https://www.linkedin.com/in/bidyut-priyam-kumar/',

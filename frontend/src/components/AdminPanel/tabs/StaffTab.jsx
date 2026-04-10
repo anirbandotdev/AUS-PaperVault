@@ -397,7 +397,7 @@ export default function StaffTab() {
            style={{ position: "absolute", top: "0.5rem", right: "0.5rem", opacity: 1, height: "32px", width: "32px", zIndex: 10 }}
            onClick={(e) => {
              e.stopPropagation();
-             handleRemove(st.id);
+             handleRemove(st);
            }}
            title="Revoke Role"
          >
