@@ -1,11 +1,11 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { MessageSquare, Send, CheckCircle2, AlertCircle, LogIn } from "lucide-react";
+import { AlertCircle, CheckCircle2, LogIn, MessageSquare, Send } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { apiFetch } from "../api/api";
 import { useAuth } from "../context/AuthContext";
 import { notifyFeedbackSubmitted } from "../data/adminNotifications";
 import "./FeedbackPage.css";
-import { apiFetch } from "../api/api";
 
 const pageVariants = {
   initial: { opacity: 0, y: 15 },
@@ -45,7 +45,7 @@ export default function FeedbackPage() {
               <Link to="/login" className="btn-cyber-solid">
                 Log In
               </Link>
-              <Link to="/signup" className="btn-cyber-solid" style={{ background: "transparent", border: "1px solid rgba(175, 179, 247, 0.3)" }}>
+              <Link to="/signup" className="btn-cyber-solid" style={{ border: "1px solid rgba(175, 179, 247, 0.3)" }}>
                 Sign Up
               </Link>
             </div>

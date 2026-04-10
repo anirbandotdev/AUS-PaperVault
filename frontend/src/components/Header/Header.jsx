@@ -55,11 +55,8 @@ export default function Header() {
     { to: "/", label: "Home", icon: Home },
     { to: "/upload", label: "Upload", icon: Upload },
     { to: "/devs", label: "Devs", icon: Users },
+    { to: "/feedback", label: "Feedback", icon: MessageSquare },
   ];
-
-  if (user) {
-    navLinks.push({ to: "/feedback", label: "Feedback", icon: MessageSquare });
-  }
 
   if (user && user.role !== "Member") {
     navLinks.push({ to: "/admin", label: "Admin", icon: Shield });
