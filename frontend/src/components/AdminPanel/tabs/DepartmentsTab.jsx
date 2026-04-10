@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Plus, Upload, X, AlertTriangle, CheckCircle2, Trash2 } from "lucide-react";
 import { addDepartment, deleteDepartment, getDepartments } from "../../../data/departments";
 import { notifySuperAdminEvent } from "../../../data/adminNotifications";
+import ConfirmModal from "../ConfirmModal";
 
 export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
   const [showAddDeptForm, setShowAddDeptForm] = useState(false);
@@ -9,6 +10,7 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
   const [showEditForm, setShowEditForm] = useState(false);
   const [deptError, setDeptError] = useState("");
   const [deptSuccess, setDeptSuccess] = useState("");
+  const [confirmDelete, setConfirmDelete] = useState(null);
 
   const [newDeptForm, setNewDeptForm] = useState({
     id: "",
@@ -171,17 +173,18 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
   };
 
   const handleDeleteDepartment = (dept) => {
-    if (
-      !window.confirm(
-        `Delete department "${dept.name}" (${dept.shortName})? This action cannot be undone.`,
-      )
-    ) {
-      return;
-    }
+    setConfirmDelete(dept);
+  };
+
+  const executeDeleteDepartment = () => {
+    const dept = confirmDelete;
+    if (!dept) return;
+    setConfirmDelete(null);
 
     try {
       deleteDepartment(dept.id);
       setAllDepartments(getDepartments());
+      window.dispatchEvent(new Event("departmentsUpdated"));
       notifySuperAdminEvent({
         title: "Department removed",
         body: `Deleted department "${dept.name}".`,
@@ -198,6 +201,14 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
 
   return (
     <div className="admin-departments-section">
+      <ConfirmModal
+        open={!!confirmDelete}
+        title="Delete Department"
+        message={confirmDelete ? `Are you sure you want to permanently delete "${confirmDelete.name}" (${confirmDelete.shortName})? All associated data will be lost. This action cannot be undone.` : ""}
+        confirmLabel="Yes, Delete"
+        onConfirm={executeDeleteDepartment}
+        onCancel={() => setConfirmDelete(null)}
+      />
       <div className="admin-departments-header">
         <h2 className="admin-departments-title">Department_Management_System</h2>
         <button

@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Bell } from "lucide-react";
+import { Bell, X } from "lucide-react";
 import {
   ADMIN_NOTIF_EVENT,
+  clearAdminNotification,
+  clearAllAdminNotifications,
   getNotificationsForUser,
   getUnreadAdminNotificationCount,
   isAdminNotificationRead,
@@ -72,6 +74,17 @@ export default function AdminNotificationsBell({ currentAdmin, hasAccessToTab, s
     setOpen(false);
   };
 
+  const handleClearItem = (e, n) => {
+    e.stopPropagation();
+    clearAdminNotification(n.id);
+    refresh();
+  };
+
+  const handleClearAll = () => {
+    clearAllAdminNotifications(username, role);
+    refresh();
+  };
+
   return (
     <div className="admin-notif-wrap" ref={wrapRef}>
       <button
@@ -90,18 +103,29 @@ export default function AdminNotificationsBell({ currentAdmin, hasAccessToTab, s
         <div className="admin-notif-dropdown" role="menu">
           <div className="admin-notif-dropdown-head">
             <span className="admin-notif-dropdown-title">Alerts</span>
-            {unread > 0 && (
-              <button
-                type="button"
-                className="admin-notif-mark-all"
-                onClick={() => {
-                  markAllAdminNotificationsRead(username, role);
-                  refresh();
-                }}
-              >
-                Mark all read
-              </button>
-            )}
+            <div className="admin-notif-head-actions">
+              {unread > 0 && (
+                <button
+                  type="button"
+                  className="admin-notif-mark-all"
+                  onClick={() => {
+                    markAllAdminNotificationsRead(username, role);
+                    refresh();
+                  }}
+                >
+                  Mark all read
+                </button>
+              )}
+              {list.length > 0 && (
+                <button
+                  type="button"
+                  className="admin-notif-clear-all"
+                  onClick={handleClearAll}
+                >
+                  Clear all
+                </button>
+              )}
+            </div>
           </div>
           <div className="admin-notif-list">
             {list.length === 0 ? (
@@ -110,22 +134,35 @@ export default function AdminNotificationsBell({ currentAdmin, hasAccessToTab, s
               list.map((n) => {
                 const read = isAdminNotificationRead(username, n.id);
                 return (
-                  <button
+                  <div
                     key={n.id}
-                    type="button"
-                    role="menuitem"
                     className={`admin-notif-item ${read ? "" : "admin-notif-item--unread"}`}
-                    onClick={() => handleOpenItem(n)}
                   >
-                    <div className="admin-notif-item-top">
-                      <span className="admin-notif-item-title">{n.title}</span>
-                      <span className="admin-notif-item-time">{formatNotifTime(n.createdAt)}</span>
-                    </div>
-                    <p className="admin-notif-item-body">{n.body}</p>
-                    {n.linkTab && hasAccessToTab(role, n.linkTab) && LINK_TAB_HINT[n.linkTab] && (
-                      <span className="admin-notif-item-hint">{LINK_TAB_HINT[n.linkTab]}</span>
-                    )}
-                  </button>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      className="admin-notif-item-content"
+                      onClick={() => handleOpenItem(n)}
+                    >
+                      <div className="admin-notif-item-top">
+                        <span className="admin-notif-item-title">{n.title}</span>
+                        <span className="admin-notif-item-time">{formatNotifTime(n.createdAt)}</span>
+                      </div>
+                      <p className="admin-notif-item-body">{n.body}</p>
+                      {n.linkTab && hasAccessToTab(role, n.linkTab) && LINK_TAB_HINT[n.linkTab] && (
+                        <span className="admin-notif-item-hint">{LINK_TAB_HINT[n.linkTab]}</span>
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      className="admin-notif-clear-btn"
+                      title="Clear notification"
+                      aria-label={`Clear notification: ${n.title}`}
+                      onClick={(e) => handleClearItem(e, n)}
+                    >
+                      <X size={13} strokeWidth={2.5} />
+                    </button>
+                  </div>
                 );
               })
             )}

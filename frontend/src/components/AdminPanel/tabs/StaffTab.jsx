@@ -30,6 +30,7 @@ import {
 } from "recharts";
 import { getStaff, addStaff, removeStaff } from "../../../data/staff";
 import { getMockUsers } from "../../../data/mockUsers";
+import ConfirmModal from "../ConfirmModal";
 
 const CHART_H = 268;
 
@@ -345,12 +346,18 @@ export default function StaffTab() {
     }
   };
 
-  const handleRemove = (id) => {
-    if (window.confirm("Are you sure you want to revoke this user's admin access?")) {
-      const res = removeStaff(id);
-      if (!res.success) {
-         alert(res.error);
-      }
+  const [confirmRemove, setConfirmRemove] = useState(null);
+
+  const handleRemove = (st) => {
+    setConfirmRemove(st);
+  };
+
+  const executeRemove = () => {
+    if (!confirmRemove) return;
+    const res = removeStaff(confirmRemove.id);
+    setConfirmRemove(null);
+    if (!res.success) {
+      alert(res.error);
     }
   };
 
@@ -459,6 +466,15 @@ export default function StaffTab() {
   return (
     <div className="admin-analytics-section animate-slideUp" style={{ padding: "2rem", height: "100%", overflowY: "auto" }}>
       {statsModal}
+      <ConfirmModal
+        open={!!confirmRemove}
+        title="Revoke Admin Access"
+        message={confirmRemove ? `Are you sure you want to revoke admin access for "${confirmRemove.username}" (${confirmRemove.role})? They will no longer be able to access the admin panel.` : ""}
+        confirmLabel="Yes, Revoke"
+        variant="warning"
+        onConfirm={executeRemove}
+        onCancel={() => setConfirmRemove(null)}
+      />
 
       <div className="admin-departments-header">
         <h2 className="admin-departments-title">

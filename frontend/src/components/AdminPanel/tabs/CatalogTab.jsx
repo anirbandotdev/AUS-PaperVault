@@ -3,6 +3,7 @@ import { Book, CheckCircle2, Edit, Plus, Trash2, X } from "lucide-react";
 import { getSubjectsForSemester, SEMESTERS } from "../../../data/departments";
 import { deleteMockPaper } from "../../../data/mockPapers";
 import { notifySuperAdminEvent } from "../../../data/adminNotifications";
+import ConfirmModal from "../ConfirmModal";
 
 export default function CatalogTab({
   allDepartments,
@@ -25,6 +26,9 @@ export default function CatalogTab({
 
   const [deptError, setDeptError] = useState("");
   const [deptSuccess, setDeptSuccess] = useState("");
+
+  // Confirmation modal state: { type, title, message, payload }
+  const [confirmAction, setConfirmAction] = useState(null);
 
   const handleAddSubject = (deptId, semester, subjectName) => {
     if (!subjectName.trim()) {
@@ -199,9 +203,15 @@ export default function CatalogTab({
   };
 
   const handleDeleteSemester = (semester) => {
-    if (!window.confirm(`Delete semester ${semester}? This action cannot be undone.`)) {
-      return;
-    }
+    setConfirmAction({
+      type: "semester",
+      title: "Delete Semester",
+      message: `Are you sure you want to delete Semester ${semester}? All subjects within this semester will be affected. This action cannot be undone.`,
+      payload: { semester },
+    });
+  };
+
+  const executeDeleteSemester = (semester) => {
 
     try {
       const updatedSemesters = semestersData.filter((s) => s !== semester);
@@ -222,9 +232,16 @@ export default function CatalogTab({
   };
 
   const handleDeletePaper = (paperId) => {
-    if (!window.confirm("Delete this question paper? This action cannot be undone.")) {
-      return;
-    }
+    const paperMeta = allPapers.find((p) => p.id === paperId);
+    setConfirmAction({
+      type: "paper",
+      title: "Delete Question Paper",
+      message: `Are you sure you want to delete "${paperMeta?.subject || "this paper"}" (${paperMeta?.fileName || paperId})? This action cannot be undone.`,
+      payload: { paperId },
+    });
+  };
+
+  const executeDeletePaper = (paperId) => {
 
     try {
       const paperMeta = allPapers.find((p) => p.id === paperId);
@@ -255,11 +272,33 @@ export default function CatalogTab({
     }
   };
 
+  const handleConfirm = () => {
+    if (!confirmAction) return;
+    const { type, payload } = confirmAction;
+    setConfirmAction(null);
+
+    if (type === "subject") {
+      handleDeleteSubject(payload.deptId, payload.semester, payload.subjectName);
+    } else if (type === "semester") {
+      executeDeleteSemester(payload.semester);
+    } else if (type === "paper") {
+      executeDeletePaper(payload.paperId);
+    }
+  };
+
   return (
     <div
       className="admin-catalog-section animate-slideUp"
       style={{ padding: "2rem", height: "100%", overflowY: "auto", position: "relative" }}
     >
+      <ConfirmModal
+        open={!!confirmAction}
+        title={confirmAction?.title || "Confirm Deletion"}
+        message={confirmAction?.message || ""}
+        confirmLabel="Yes, Delete"
+        onConfirm={handleConfirm}
+        onCancel={() => setConfirmAction(null)}
+      />
       <h2 className="admin-departments-title" style={{ marginBottom: "2rem" }}>
         Catalog_Management{" "}
         <Book
@@ -546,13 +585,16 @@ export default function CatalogTab({
                               </button>
                               <button
                                 onClick={() => {
-                                  if (window.confirm(`Delete subject "${subject}"?`)) {
-                                    handleDeleteSubject(
-                                      selectedCatalogDept,
-                                      selectedCatalogSemester,
-                                      subject,
-                                    );
-                                  }
+                                  setConfirmAction({
+                                    type: "subject",
+                                    title: "Delete Subject",
+                                    message: `Are you sure you want to delete subject "${subject}"? This action cannot be undone.`,
+                                    payload: {
+                                      deptId: selectedCatalogDept,
+                                      semester: selectedCatalogSemester,
+                                      subjectName: subject,
+                                    },
+                                  });
                                 }}
                                 style={{
                                   backgroundColor: "transparent",

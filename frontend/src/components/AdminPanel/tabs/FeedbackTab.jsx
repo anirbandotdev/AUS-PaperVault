@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { MessageSquare, Trash2, Mail, User, Clock, CheckCircle2 } from "lucide-react";
 import { getFeedback, deleteFeedback } from "../../../data/feedback";
+import ConfirmModal from "../ConfirmModal";
 
 export default function FeedbackTab() {
   const [feedbacks, setFeedbacks] = useState(() => getFeedback());
@@ -35,9 +36,16 @@ export default function FeedbackTab() {
     return `${Math.floor(hrs / 24)}d ago`;
   };
 
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+
   const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this feedback?")) {
-      deleteFeedback(id);
+    setConfirmDeleteId(id);
+  };
+
+  const executeDelete = () => {
+    if (confirmDeleteId) {
+      deleteFeedback(confirmDeleteId);
+      setConfirmDeleteId(null);
     }
   };
 
@@ -57,6 +65,14 @@ export default function FeedbackTab() {
 
   return (
     <div className="admin-analytics-section animate-slideUp" style={{ padding: "2rem", height: "100%", overflowY: "auto" }}>
+      <ConfirmModal
+        open={!!confirmDeleteId}
+        title="Delete Feedback"
+        message="Are you sure you want to permanently delete this feedback? This action cannot be undone."
+        confirmLabel="Yes, Delete"
+        onConfirm={executeDelete}
+        onCancel={() => setConfirmDeleteId(null)}
+      />
       <h2 className="admin-departments-title" style={{ marginBottom: "2rem" }}>
         User_Feedback
         <MessageSquare size={18} style={{ display: "inline", marginLeft: "0.5rem", color: "var(--color-vault-lavender)" }} />

@@ -54,7 +54,7 @@ export default function AdminPanel() {
 
     const roleAccess = {
       super_admin: ["review", "departments", "analytics", "catalog", "feedback", "staff"],
-      moderator: ["review", "departments"],
+      moderator: ["review", "departments", "catalog"],
       reviewer: ["review"],
       member: [], // Members have zero access to admin panels
     };

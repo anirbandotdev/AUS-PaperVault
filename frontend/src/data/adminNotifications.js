@@ -108,6 +108,21 @@ export function markAllAdminNotificationsRead(username, role) {
   window.dispatchEvent(new CustomEvent(ADMIN_NOTIF_EVENT));
 }
 
+/** Remove a single notification permanently */
+export function clearAdminNotification(id) {
+  const list = getAllAdminNotifications().filter((n) => n.id !== id);
+  localStorage.setItem(STORAGE, JSON.stringify(list));
+  window.dispatchEvent(new CustomEvent(ADMIN_NOTIF_EVENT));
+}
+
+/** Remove all notifications visible to a given user/role */
+export function clearAllAdminNotifications(username, role) {
+  const visible = new Set(getNotificationsForUser(username, role).map((n) => n.id));
+  const remaining = getAllAdminNotifications().filter((n) => !visible.has(n.id));
+  localStorage.setItem(STORAGE, JSON.stringify(remaining));
+  window.dispatchEvent(new CustomEvent(ADMIN_NOTIF_EVENT));
+}
+
 /** Question paper submitted (API or mock queue) — all staff */
 export function notifyPaperUpload({ departmentLabel = "", subjectLabel = "", fileName = "" } = {}) {
   const parts = [departmentLabel, subjectLabel].filter(Boolean);
