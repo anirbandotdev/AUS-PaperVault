@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { MessageSquare, Send, CheckCircle2, AlertCircle } from "lucide-react";
+import { MessageSquare, Send, CheckCircle2, AlertCircle, LogIn } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import { notifyFeedbackSubmitted } from "../data/adminNotifications";
 import "./FeedbackPage.css";
 import { apiFetch } from "../api/api";
@@ -12,12 +14,46 @@ const pageVariants = {
 };
 
 export default function FeedbackPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const { user } = useAuth();
+  const [name, setName] = useState(user?.username || "");
+  const [email, setEmail] = useState(user?.email || "");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+
+  if (!user) {
+    return (
+      <motion.div
+        className="page-enter"
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={pageVariants}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      >
+        <div className="container-vault feedback-wrapper">
+          <div className="feedback-success glass-card" style={{ textAlign: "center" }}>
+            <div className="feedback-success-icon" style={{ color: "var(--color-vault-lavender)" }}>
+              <LogIn size={48} />
+            </div>
+            <h2 className="feedback-success-title">Sign In Required</h2>
+            <p className="feedback-success-text">
+              You need to be signed in to submit feedback. Please log in or create an account first.
+            </p>
+            <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center", marginTop: "1.5rem" }}>
+              <Link to="/login" className="btn-cyber-solid">
+                Log In
+              </Link>
+              <Link to="/signup" className="btn-cyber-solid" style={{ background: "transparent", border: "1px solid rgba(175, 179, 247, 0.3)" }}>
+                Sign Up
+              </Link>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
 
   const handleSubmit = async (e) => {
     try {

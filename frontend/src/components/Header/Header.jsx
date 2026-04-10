@@ -55,8 +55,11 @@ export default function Header() {
     { to: "/", label: "Home", icon: Home },
     { to: "/upload", label: "Upload", icon: Upload },
     { to: "/devs", label: "Devs", icon: Users },
-    { to: "/feedback", label: "Feedback", icon: MessageSquare },
   ];
+
+  if (user) {
+    navLinks.push({ to: "/feedback", label: "Feedback", icon: MessageSquare });
+  }
 
   if (user && user.role !== "Member") {
     navLinks.push({ to: "/admin", label: "Admin", icon: Shield });
@@ -67,7 +70,7 @@ export default function Header() {
       <div className="header">
         <div className="container-vault">
           <div className="header-inner">
-            {/* Logo */}
+            {/* ── Left: Logo + Stats ── */}
             <Link
               to="/"
               className="header-logo"
@@ -84,7 +87,6 @@ export default function Header() {
               </div>
             </Link>
 
-            {/* Desktop Stats */}
             <div className="header-stats">
               <div className="stat-item">
                 <FileText className="stat-icon" />
@@ -97,12 +99,12 @@ export default function Header() {
                 <Building2 className="stat-icon" />
                 <div>
                   <div className="stat-value">{totalDepts}</div>
-                  <div className="stat-label">Departments</div>
+                  <div className="stat-label">Depts</div>
                 </div>
               </div>
             </div>
 
-            {/* Desktop Nav */}
+            {/* ── Center: Nav (pushes right via margin-left:auto) ── */}
             <nav className="header-nav">
               {navLinks.map((link) => (
                 <Link
@@ -110,65 +112,67 @@ export default function Header() {
                   to={link.to}
                   className={`nav-link ${isActive(link.to) ? "active" : ""}`}
                 >
-                  <link.icon size={14} />
+                  <link.icon size={13} />
                   {link.label}
                 </Link>
               ))}
             </nav>
 
-            {/* User Menu / Auth Buttons */}
-            {user ? (
-              <div className="user-menu-container" ref={userMenuRef}>
-                <button
-                  className="user-menu-btn"
-                  onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  aria-label="User menu"
-                  title={`Logged in as ${user.username}`}
-                >
-                  <UserIcon size={18} />
-                  <span className="user-name">{user.username}</span>
-                </button>
-                {userMenuOpen && (
-                  <div className="user-dropdown">
-                    <div className="user-info">
-                      <UserIcon size={16} />
-                      <div className="user-details">
-                        <p className="user-email">{user.email}</p>
-                        <p className="user-name-small">Logged in</p>
+            {/* ── Right: User / Auth ── */}
+            <div className="header-right">
+              {user ? (
+                <div className="user-menu-container" ref={userMenuRef}>
+                  <button
+                    className="user-menu-btn"
+                    onClick={() => setUserMenuOpen(!userMenuOpen)}
+                    aria-label="User menu"
+                    title={`Logged in as ${user.username}`}
+                  >
+                    <UserIcon size={16} />
+                    <span className="user-name">{user.username}</span>
+                  </button>
+                  {userMenuOpen && (
+                    <div className="user-dropdown">
+                      <div className="user-info">
+                        <UserIcon size={16} />
+                        <div className="user-details">
+                          <p className="user-email">{user.email}</p>
+                          <p className="user-name-small">Logged in</p>
+                        </div>
                       </div>
+                      <hr className="dropdown-divider" />
+                      <button
+                        className="logout-btn"
+                        onClick={() => {
+                          logout();
+                          setUserMenuOpen(false);
+                        }}
+                      >
+                        <LogOut size={16} />
+                        Logout
+                      </button>
                     </div>
-                    <hr className="dropdown-divider" />
-                    <button
-                      className="logout-btn"
-                      onClick={() => {
-                        logout();
-                        setUserMenuOpen(false);
-                      }}
-                    >
-                      <LogOut size={16} />
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="auth-buttons">
-                <Link
-                  to="/login"
-                  className="auth-btn login-btn"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/signup"
-                  className="auth-btn signup-btn"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Sign Up
-                </Link>
-              </div>
-            )}
+                  )}
+                </div>
+              ) : (
+                <div className="auth-buttons">
+                  <Link
+                    to="/login"
+                    className="auth-btn login-btn"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="auth-btn signup-btn"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )}
+            </div>
 
             {/* Mobile Menu Button */}
             <button
@@ -176,7 +180,7 @@ export default function Header() {
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle navigation menu"
             >
-              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
 
