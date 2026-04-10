@@ -183,8 +183,8 @@ function DevCard({ dev, index }) {
           )}
 
           {hasSocials && (
-            <div className="dev-socials-dock" style={{ position: 'absolute', bottom: '30px', left: 0, right: 0, display: 'flex', justifyContent: 'center' }}>
-              <GlassDock items={dockItems} className="scale-75 origin-bottom" dockClassName="px-4 py-3" />
+            <div className="dev-socials-dock" style={{ marginTop: 'auto', paddingTop: '0.75rem', display: 'flex', justifyContent: 'center', position: 'relative', overflow: 'visible' }}>
+              <GlassDock items={dockItems} className="scale-75 origin-center" dockClassName="px-4 py-2" />
             </div>
           )}
         </div>
