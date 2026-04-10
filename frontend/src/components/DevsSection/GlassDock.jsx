@@ -35,15 +35,15 @@ export const GlassDock = React.forwardRef(
             {hoveredIndex !== null && (
               <motion.div
                 layout
-                initial={{ opacity: 0, scale: 0.92, y: 35 }}
+                initial={{ opacity: 0, scale: 0.92, y: -15 }}
                 animate={{
                   opacity: 1,
                   scale: 1,
-                  y: 70,
+                  y: -30,
                   x: getTooltipPosition(hoveredIndex),
                 }}
-                exit={{ opacity: 0, scale: 0.92, y: 35 }}
-                transition={{ type: 'spring', stiffness: 120, damping: 18 }}
+                exit={{ opacity: 0, scale: 0.92, y: -15 }}
+                transition={{ type: 'spring', stiffness: 200, damping: 22 }}
                 className="absolute top-0 left-0 pointer-events-none z-30"
               >
                 <div
