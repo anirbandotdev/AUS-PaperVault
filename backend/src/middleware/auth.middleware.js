@@ -19,14 +19,17 @@ export const authMiddleware = (req, res, next) => {
 
         if (decoded) {
             res.user = decoded;
-            res.success = true;
             return next();
         }
         sendError(res, "No data in token", STATUS_CODES.FORBIDDEN);
     } catch (err) {
         if (err.name == "TokenExpiredError") {
-            res.success = false;
-            return next();
+            return sendError(
+                res,
+                "Token expired",
+                STATUS_CODES.FORBIDDEN,
+                err.name
+            );
         }
         console.log(err);
         sendError(res, "Not a valid token", STATUS_CODES.FORBIDDEN, err);

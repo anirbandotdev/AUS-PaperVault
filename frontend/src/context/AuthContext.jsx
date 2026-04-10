@@ -7,7 +7,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load user from localStorage on mount
   useEffect(() => {
     const fetchData = async () => {
       const accessToken = localStorage.getItem("access_token");
@@ -18,6 +17,21 @@ export function AuthProvider({ children }) {
               authorization: `Bearer ${accessToken}`,
             },
           });
+          
+          if (!data.success && data.error == "TokenExpiredError") {
+            const res = await apiFetch("/user/request-token", "POST");
+            if (!res.success) {
+              throw new Error("Refresh token failed");
+            } else {
+              setUser({
+                username: res.username,
+                email: res.email,
+                role: res.role,
+              });
+              localStorage.setItem("access_token", res.token);
+            }
+            return;
+          }
 
           setUser({
             username: data.username,
