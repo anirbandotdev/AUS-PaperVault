@@ -50,6 +50,9 @@ userRouter.post("/request-token", async (req, res) => {
         });
 
         sendSuccess(res, "New access token generated", STATUS_CODES.SUCCESS, {
+            username: user.username,
+            email: user.email,
+            role: user.role,
             token: newAccessToken,
         });
     } catch (err) {
@@ -64,21 +67,26 @@ userRouter.post("/request-token", async (req, res) => {
 });
 
 userRouter.get("/profile", authMiddleware, async (req, res) => {
-    if (!res.success) {
-        return sendError(res, "User is not logged in", STATUS_CODES.FORBIDDEN);
+    try {
+        const user = await User.findOne({ _id: res.user._id });
+
+        if (!user) {
+            return sendError(res, "User not found", STATUS_CODES.NOT_FOUND);
+        }
+
+        sendSuccess(res, "User fetched succesfully", STATUS_CODES.SUCCESS, {
+            username: user.username,
+            email: user.email,
+            role: user.role,
+        });
+    } catch (err) {
+        sendError(
+            res,
+            "Error in server",
+            STATUS_CODES.SERVER_ERROR,
+            err.message
+        );
     }
-
-    const user = await User.findOne({ _id: res.user._id });
-
-    if (!user) {
-        return sendError(res, "User not found", STATUS_CODES.NOT_FOUND);
-    }
-
-    sendSuccess(res, "User fetched succesfully", STATUS_CODES.SUCCESS, {
-        username: user.username,
-        email: user.email,
-        role: user.role,
-    });
 });
 
 userRouter.post("/register", async (req, res) => {
