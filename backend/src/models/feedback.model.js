@@ -2,16 +2,18 @@ import mongoose from "mongoose";
 
 const feedbackSchema = new mongoose.Schema(
     {
-        name: {
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        },
+        username: {
             type: String,
             required: true,
-            required: [true, "Name is required"],
             trim: true,
         },
         email: {
             type: String,
             required: true,
-            required: [true, "Name is required"],
             trim: true,
         },
         message: {

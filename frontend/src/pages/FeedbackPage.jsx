@@ -1,5 +1,11 @@
 import { motion } from "framer-motion";
-import { AlertCircle, CheckCircle2, LogIn, MessageSquare, Send } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle2,
+  LogIn,
+  MessageSquare,
+  Send,
+} from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../api/api";
@@ -33,19 +39,37 @@ export default function FeedbackPage() {
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
         <div className="container-vault feedback-wrapper">
-          <div className="feedback-success glass-card" style={{ textAlign: "center" }}>
-            <div className="feedback-success-icon" style={{ color: "var(--color-vault-lavender)" }}>
+          <div
+            className="feedback-success glass-card"
+            style={{ textAlign: "center" }}
+          >
+            <div
+              className="feedback-success-icon"
+              style={{ color: "var(--color-vault-lavender)" }}
+            >
               <LogIn size={48} />
             </div>
             <h2 className="feedback-success-title">Sign In Required</h2>
             <p className="feedback-success-text">
-              You need to be signed in to submit feedback. Please log in or create an account first.
+              You need to be signed in to submit feedback. Please log in or
+              create an account first.
             </p>
-            <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center", marginTop: "1.5rem" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "0.75rem",
+                justifyContent: "center",
+                marginTop: "1.5rem",
+              }}
+            >
               <Link to="/login" className="btn-cyber-solid">
                 Log In
               </Link>
-              <Link to="/signup" className="btn-cyber-solid" style={{ border: "1px solid rgba(175, 179, 247, 0.3)" }}>
+              <Link
+                to="/signup"
+                className="btn-cyber-solid"
+                style={{ border: "1px solid rgba(175, 179, 247, 0.3)" }}
+              >
                 Sign Up
               </Link>
             </div>
@@ -62,11 +86,12 @@ export default function FeedbackPage() {
 
       setSubmitting(true);
       setError(null);
-
+      const token = localStorage.getItem("access_token");
       const data = await apiFetch("/feedback/send", "POST", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
         body: {
-          name,
-          email,
           message,
         },
       });
@@ -76,9 +101,11 @@ export default function FeedbackPage() {
         return;
       }
       notifyFeedbackSubmitted({
-        name: name?.trim() || "Anonymous",
+        name: data.username.trim() || "Anonymous",
         preview: message,
       });
+
+      window.dispatchEvent(new Event("feedbackUpdated"));
       setSubmitting(false);
       setSubmitted(true);
       setName("");

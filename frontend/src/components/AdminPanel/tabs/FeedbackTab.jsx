@@ -1,17 +1,34 @@
 import { useState, useEffect } from "react";
-import { MessageSquare, Trash2, Mail, User, Clock, CheckCircle2 } from "lucide-react";
+import {
+  MessageSquare,
+  Trash2,
+  Mail,
+  User,
+  Clock,
+  CheckCircle2,
+} from "lucide-react";
 import { getFeedback, deleteFeedback } from "../../../data/feedback";
 import ConfirmModal from "../ConfirmModal";
 
 export default function FeedbackTab() {
-  const [feedbacks, setFeedbacks] = useState(() => getFeedback());
+  const [feedbacks, setFeedbacks] = useState([]);
   const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
-    const handleFeedbackUpdate = () => {
-      setFeedbacks(getFeedback());
+    const fetchFeedbacks = async () => {
+      const data = await getFeedback();
+      setFeedbacks(data);
     };
-    
+
+    fetchFeedbacks();
+  }, []);
+
+  useEffect(() => {
+    const handleFeedbackUpdate = async () => {
+      const feedbackList = await getFeedback();
+      setFeedbacks(feedbackList);
+    };
+
     // Update timestamps periodically
     const interval = setInterval(() => setNow(Date.now()), 60000);
 
@@ -51,20 +68,30 @@ export default function FeedbackTab() {
 
   if (feedbacks.length === 0) {
     return (
-      <div className="admin-empty-state" style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+      <div
+        className="admin-empty-state"
+        style={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <div className="admin-empty-icon" style={{ marginBottom: "1rem" }}>
           <CheckCircle2 size={48} />
         </div>
         <h2 className="admin-empty-title">Inbox Zero</h2>
-        <p className="admin-empty-sub">
-          No feedback messages to display.
-        </p>
+        <p className="admin-empty-sub">No feedback messages to display.</p>
       </div>
     );
   }
 
   return (
-    <div className="admin-analytics-section animate-slideUp" style={{ padding: "2rem", height: "100%", overflowY: "auto" }}>
+    <div
+      className="admin-analytics-section animate-slideUp"
+      style={{ padding: "2rem", height: "100%", overflowY: "auto" }}
+    >
       <ConfirmModal
         open={!!confirmDeleteId}
         title="Delete Feedback"
@@ -75,13 +102,24 @@ export default function FeedbackTab() {
       />
       <h2 className="admin-departments-title" style={{ marginBottom: "2rem" }}>
         User_Feedback
-        <MessageSquare size={18} style={{ display: "inline", marginLeft: "0.5rem", color: "var(--color-vault-lavender)" }} />
+        <MessageSquare
+          size={18}
+          style={{
+            display: "inline",
+            marginLeft: "0.5rem",
+            color: "var(--color-vault-lavender)",
+          }}
+        />
       </h2>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         {feedbacks.map((item) => (
-          <div key={item.id} className="glass-card" style={{ padding: "1.5rem", position: "relative" }}>
-            <button 
+          <div
+            key={item._id}
+            className="glass-card"
+            style={{ padding: "1.5rem", position: "relative" }}
+          >
+            <button
               onClick={() => handleDelete(item.id)}
               className="admin-dept-card-delete"
               title="Delete feedback"
@@ -99,39 +137,77 @@ export default function FeedbackTab() {
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center"
+                justifyContent: "center",
               }}
             >
               <Trash2 size={14} />
             </button>
 
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem", paddingRight: "3rem" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--color-vault-light)" }}>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "1rem",
+                marginBottom: "1rem",
+                paddingRight: "3rem",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  color: "var(--color-vault-light)",
+                }}
+              >
                 <User size={14} color="var(--color-vault-steel)" />
-                <strong>{item.name}</strong>
+                <strong>{item.username}</strong>
               </div>
               {item.email && (
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--color-vault-lavender)" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    color: "var(--color-vault-lavender)",
+                  }}
+                >
                   <Mail size={14} color="var(--color-vault-steel)" />
-                  <a href={`mailto:${item.email}`} style={{ color: "inherit", textDecoration: "none" }}>{item.email}</a>
+                  <a
+                    href={`mailto:${item.email}`}
+                    style={{ color: "inherit", textDecoration: "none" }}
+                  >
+                    {item.email}
+                  </a>
                 </div>
               )}
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--color-vault-steel)", fontSize: "0.85rem", marginLeft: "auto" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  color: "var(--color-vault-steel)",
+                  fontSize: "0.85rem",
+                  marginLeft: "auto",
+                }}
+              >
                 <Clock size={12} />
-                {getTimeAgo(item.submittedAt)}
+                {getTimeAgo(item.createdAt)}
               </div>
             </div>
 
-            <div style={{
-              background: "rgba(0, 20, 40, 0.3)",
-              padding: "1rem",
-              borderRadius: "0.5rem",
-              border: "1px solid rgba(175, 179, 247, 0.1)",
-              color: "var(--color-vault-light)",
-              fontFamily: "var(--font-primary)",
-              lineHeight: 1.6,
-              whiteSpace: "pre-wrap"
-            }}>
+            <div
+              style={{
+                background: "rgba(0, 20, 40, 0.3)",
+                padding: "1rem",
+                borderRadius: "0.5rem",
+                border: "1px solid rgba(175, 179, 247, 0.1)",
+                color: "var(--color-vault-light)",
+                fontFamily: "var(--font-primary)",
+                lineHeight: 1.6,
+                whiteSpace: "pre-wrap",
+              }}
+            >
               {item.message}
             </div>
           </div>
