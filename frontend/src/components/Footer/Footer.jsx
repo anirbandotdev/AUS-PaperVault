@@ -39,8 +39,22 @@ export default function Footer() {
               <h4>University</h4>
               <ul>
                 <li><a href="https://aus.ac.in" target="_blank" rel="noopener noreferrer">AUS Official</a></li>
-                <li><a href="#departments">Departments</a></li>
-                <li><a href="#" onClick={(e) => e.preventDefault()}>Results Portal</a></li>
+                <li>
+                  <Link 
+                    to="/#departments"
+                    onClick={(e) => {
+                      if (window.location.pathname === '/') {
+                        e.preventDefault();
+                        const el = document.getElementById('departments');
+                        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        // Optionally update URL to reflect hash without reloading
+                        window.history.pushState(null, '', '/#departments');
+                      }
+                    }}
+                  >
+                    Departments
+                  </Link>
+                </li>
                 <li><a href="#" onClick={(e) => e.preventDefault()}>Exam Schedule</a></li>
               </ul>
             </div>

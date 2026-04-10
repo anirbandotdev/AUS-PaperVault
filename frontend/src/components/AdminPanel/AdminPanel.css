@@ -815,6 +815,17 @@
   animation: slideUp 0.2s ease forwards;
 }
 
+@media (max-width: 768px) {
+  .admin-notif-dropdown {
+    position: fixed;
+    top: 60px;
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+    max-width: none;
+  }
+}
+
 .admin-notif-dropdown-head {
   display: flex;
   align-items: center;
@@ -1069,12 +1080,32 @@
 
 /* ───── Mobile adjustments ───── */
 @media (max-width: 768px) {
+  .admin-topbar {
+    padding: 0.65rem 0.75rem;
+    gap: 0.5rem;
+  }
+  .admin-exit-text {
+    display: none;
+  }
+  .admin-topbar-title {
+    font-size: 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 auto;
+  }
+  .admin-user-text {
+    display: none;
+  }
   .admin-topbar-right {
-    gap: 0.3rem;
+    gap: 0.4rem;
   }
   .admin-user-badge {
-    font-size: 0.5rem;
-    padding: 0.2rem 0.5rem;
+    padding: 0.35rem;
+    justify-content: center;
+  }
+  .admin-user-badge svg {
+    margin: 0;
   }
   .admin-node-status {
     display: none;
@@ -1553,6 +1584,20 @@ select.admin-form-input option {
   box-shadow: 0 2px 8px rgba(248, 113, 113, 0.15);
 }
 
+@media (max-width: 1024px), (hover: none) and (pointer: coarse) {
+  .admin-dept-card-edit,
+  .admin-dept-card-delete {
+    opacity: 1;
+    background: rgba(175, 179, 247, 0.15);
+    border-color: rgba(175, 179, 247, 0.3);
+  }
+  
+  .admin-dept-card-delete {
+    background: rgba(248, 113, 113, 0.15);
+    border-color: rgba(248, 113, 113, 0.3);
+  }
+}
+
 .admin-no-departments {
   grid-column: 1 / -1;
   display: flex;
@@ -1903,4 +1948,123 @@ select.admin-form-input option {
 .confirm-modal-close:hover {
   color: #fff;
   background: rgba(255, 255, 255, 0.08);
+}
+
+/* ───── RESPONSIVE STAFF TAB LAYOUT ───── */
+.admin-staff-layout {
+  display: flex;
+  gap: 2rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.admin-staff-formbox {
+  flex: 1;
+  min-width: 250px;
+  max-width: 290px;
+}
+
+.admin-staff-listbox {
+  flex: 4;
+  min-width: 500px;
+  margin-right: -10px;
+}
+
+.admin-staff-roles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .admin-staff-layout {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .admin-staff-formbox {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .admin-staff-listbox {
+    min-width: 0;
+    width: 100%;
+    margin-right: 0;
+  }
+  
+  .admin-staff-roles-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+/* ───── RESPONSIVE ANALYTICS TAB LAYOUT ───── */
+.admin-analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .admin-analytics-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* ───── RESPONSIVE CATALOG TAB LAYOUT ───── */
+.admin-catalog-subjects-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  height: 100%;
+}
+
+.admin-catalog-papers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .admin-catalog-subjects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-catalog-papers-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ───── RESPONSIVE FEEDBACK TAB LAYOUT ───── */
+.admin-feedback-header-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-right: 3rem;
+}
+
+.admin-feedback-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-vault-steel);
+  font-size: 0.85rem;
+  margin-left: auto;
+}
+
+@media (max-width: 600px) {
+  .admin-feedback-header-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .admin-feedback-date {
+    margin-left: 0;
+  }
 }

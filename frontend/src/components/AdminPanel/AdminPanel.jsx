@@ -52,7 +52,7 @@ export default function AdminPanel() {
 
     const roleAccess = {
       super_admin: ["review", "departments", "analytics", "catalog", "feedback", "staff"],
-      moderator: ["review", "departments", "catalog"],
+      moderator: ["review", "departments", "catalog", "feedback"],
       reviewer: ["review"],
       member: [], // Members have zero access to admin panels
     };
@@ -96,10 +96,10 @@ export default function AdminPanel() {
         <div className="admin-topbar-left">
           <Link to="/" className="admin-exit-btn">
             <ArrowLeft size={14} />
-            Exit_Review
+            <span className="admin-exit-text">Exit_Panel</span>
           </Link>
         </div>
-        <span className="admin-topbar-title">SYS.ADMIN_REVIEW</span>
+        <span className="admin-topbar-title">SYS.ADMIN_PANEL</span>
         <div className="admin-topbar-right">
           <AdminNotificationsBell
             currentAdmin={currentAdmin}
@@ -108,7 +108,7 @@ export default function AdminPanel() {
           />
           <div className="admin-user-badge">
             <User size={11} />
-            {currentAdmin?.username} ({currentAdmin?.role})
+            <span className="admin-user-text">{currentAdmin?.username} ({currentAdmin?.role})</span>
           </div>
           <button className="admin-logout-btn" onClick={handleLogout} title="Logout">
             <LogOut size={13} />

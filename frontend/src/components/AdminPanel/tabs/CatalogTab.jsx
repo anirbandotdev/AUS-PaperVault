@@ -369,7 +369,7 @@ export default function CatalogTab({
       </div>
 
       {catalogTab === "subjects" && (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "2rem", height: "100%" }}>
+        <div className="admin-catalog-subjects-grid">
           <div className="glass-card" style={{ padding: "1.5rem", height: "fit-content" }}>
             <h3
               style={{
@@ -774,7 +774,7 @@ export default function CatalogTab({
             Edit & Delete Question Papers
           </h3>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", marginBottom: "1.5rem" }}>
+          <div className="admin-catalog-papers-grid">
             <div>
               <label style={{ fontSize: "0.75rem", color: "var(--color-vault-steel)", display: "block", marginBottom: "0.5rem", fontWeight: "600" }}>Department</label>
               <select

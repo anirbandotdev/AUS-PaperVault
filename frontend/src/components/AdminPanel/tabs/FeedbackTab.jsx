@@ -143,6 +143,7 @@ export default function FeedbackTab() {
               <Trash2 size={14} />
             </button>
 
+<<<<<<< Updated upstream
             <div
               style={{
                 display: "flex",
@@ -160,6 +161,10 @@ export default function FeedbackTab() {
                   color: "var(--color-vault-light)",
                 }}
               >
+=======
+            <div className="admin-feedback-header-row">
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--color-vault-light)" }}>
+>>>>>>> Stashed changes
                 <User size={14} color="var(--color-vault-steel)" />
                 <strong>{item.username}</strong>
               </div>
@@ -181,6 +186,7 @@ export default function FeedbackTab() {
                   </a>
                 </div>
               )}
+<<<<<<< Updated upstream
               <div
                 style={{
                   display: "flex",
@@ -191,6 +197,9 @@ export default function FeedbackTab() {
                   marginLeft: "auto",
                 }}
               >
+=======
+              <div className="admin-feedback-date">
+>>>>>>> Stashed changes
                 <Clock size={12} />
                 {getTimeAgo(item.createdAt)}
               </div>

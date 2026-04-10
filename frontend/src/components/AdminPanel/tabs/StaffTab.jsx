@@ -481,10 +481,10 @@ export default function StaffTab() {
         </h2>
       </div>
 
-      <div style={{ display: "flex", gap: "2rem", flexDirection: "row", flexWrap: "wrap", alignItems: "flex-start" }}>
+      <div className="admin-staff-layout">
         
         {/* ADD STAFF FORM */}
-        <div className="admin-add-dept-form-container" style={{ flex: "1", minWidth: "250px", maxWidth: "290px" }}>
+        <div className="admin-add-dept-form-container admin-staff-formbox">
            <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "0.9rem", color: "var(--color-vault-lavender)", marginBottom: "1rem" }}>Promote User</h3>
            
            {error && (
@@ -589,20 +589,20 @@ export default function StaffTab() {
         </div>
 
         {/* CURRENT STAFF LIST */}
-        <div style={{ flex: "4", minWidth: "500px", marginRight: "-10px" }}>
+        <div className="admin-staff-listbox">
            <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "0.9rem", color: "var(--color-vault-lavender)", marginBottom: "1rem" }}>Active Staff Members</h3>
            
            {/* ROOT USERS */}
            <h4 style={{ fontSize: "0.75rem", color: "var(--color-vault-steel)", marginBottom: "1rem", textTransform: "uppercase", letterSpacing: "1px", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "0.5rem" }}>
              System Root Nodes <span style={{ opacity: 0.5, marginLeft: "0.5rem" }}>({rootStaff.length})</span>
            </h4>
-           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1rem", marginBottom: "2.5rem" }}>
+           <div className="admin-staff-roles-grid" style={{ marginBottom: "2.5rem" }}>
              {rootStaff.map(renderCard)}
            </div>
 
            {/* CUSTOM USERS - Side-by-side Category Columns */}
            {(!customModerators.length && !customReviewers.length) ? null : (
-             <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "2rem" }}>
+             <div className="admin-staff-roles-grid">
                
                {/* MODERATORS COLUMN */}
                <div>

@@ -49,13 +49,8 @@ export default function AnalyticsTab({ allDepartments }) {
       </h2>
 
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
-          gap: "2rem",
-          marginBottom: "2rem",
-        }}
         className="admin-analytics-grid"
+        style={{ marginBottom: "2rem" }}
       >
         <div className="glass-card" style={{ padding: "1.5rem" }}>
           <h3

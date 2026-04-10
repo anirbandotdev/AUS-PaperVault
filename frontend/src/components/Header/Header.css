@@ -186,7 +186,6 @@
   color: var(--color-vault-lavender);
   cursor: pointer;
   transition: all 0.25s ease;
-  margin-left: auto;
 }
 
 .mobile-menu-btn:hover {
@@ -242,6 +241,7 @@
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 /* ───── User Menu ───── */
