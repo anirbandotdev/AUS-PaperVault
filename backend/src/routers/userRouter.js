@@ -142,7 +142,7 @@ userRouter.post("/register", async (req, res) => {
             res,
             "User succesfully created",
             STATUS_CODES.SUCCESS,
-            { token, username, email, role: newUser.role }
+            { token, username, email, role: newUser.role, userId: newUser._id }
         );
     } catch (err) {
         console.log(err);
@@ -218,6 +218,8 @@ userRouter.post("/login", async (req, res) => {
     }
 });
 
-userRouter.post("/logout", async (req, res) => {});
+userRouter.post("/delete", async (req, res) => {
+    
+});
 
 export default userRouter;
