@@ -141,30 +141,17 @@ emailRouter.post("/verify-otp", async (req, res) => {
 
 emailRouter.post("/resend-otp", async (req, res) => {
     try {
-        const { userId, email } = req.body;
+        const { username, email } = req.body;
 
-        if (!userId || !email) {
+        if (!username|| !email) {
             return sendError(
                 res,
-                "User ID and email are required",
+                "Username and email are required",
                 STATUS_CODES.BAD_REQUEST
             );
         }
 
-        const user = await User.findById(userId);
-        if (!user) {
-            return sendError(res, "User not found", STATUS_CODES.NOT_FOUND);
-        }
-
-        if (user.isVerified) {
-            return sendError(
-                res,
-                "User email is already verified",
-                STATUS_CODES.FORBIDDEN
-            );
-        }
-
-        await EmailVerification.deleteMany({ userId });
+        await EmailVerification.deleteMany({ email });
 
         const otp = generateOTP();
         const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
