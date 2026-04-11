@@ -1,5 +1,4 @@
 /* Layout handled by AuthLayout */
-
 .login-container {
   display: flex;
   align-items: center;
@@ -11,7 +10,6 @@
   padding-top: 2rem; /* Reduced to push card upward */
   padding-bottom: 2.5rem;
 }
-
 .login-card {
   background: rgba(var(--color-vault-white-rgb), 0.03);
   backdrop-filter: blur(40px) saturate(150%);
@@ -25,12 +23,10 @@
   width: 100%;
   animation: slideUp 0.6s ease-out;
 }
-
 .login-header {
   text-align: center;
   margin-bottom: 1.25rem;
 }
-
 .login-icon {
   display: flex;
   align-items: center;
@@ -47,35 +43,31 @@
   margin: 0 auto 0.75rem;
   color: var(--color-vault-lavender);
 }
-
 .login-title {
   font-family: var(--font-heading);
   font-size: 1.4rem;
   font-weight: 700;
+  color: var(--color-vault-light);
   color: var(--color-vault-text);
   margin-bottom: 0.3rem;
 }
-
 .login-subtitle {
   font-family: var(--font-body);
   font-size: 0.85rem;
   color: rgba(var(--color-vault-lavender-rgb), 0.6);
   margin: 0;
 }
-
 .login-form {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   margin-bottom: 1.25rem;
 }
-
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-
 .form-label {
   font-family: var(--font-mono);
   font-size: 0.8rem;
@@ -83,13 +75,11 @@
   text-transform: uppercase;
   color: rgba(var(--color-vault-lavender-rgb), 0.7);
 }
-
 .password-label-row {
   display: flex;
   justify-content:end;
   align-items: center;
 }
-
 .forgot-password-link {
   font-family: var(--font-body);
   font-size: 0.8rem;
@@ -97,12 +87,10 @@
   text-decoration: none;
   transition: all 0.2s ease;
 }
-
 .forgot-password-link:hover {
   text-decoration: underline;
   color: var(--color-vault-lavender);
 }
-
 .input-wrapper {
   display: flex;
   align-items: center;
@@ -114,43 +102,37 @@
   border-radius: 0;
   transition: all 0.2s ease;
 }
-
 .input-wrapper:focus-within {
   border-bottom-color: var(--color-vault-lavender);
   box-shadow: none;
 }
-
 .input-icon {
   color: rgba(var(--color-vault-lavender-rgb), 0.5);
   flex-shrink: 0;
   stroke-width: 2;
 }
-
 .form-input {
   flex: 1;
   background: transparent;
   border: none;
   outline: none;
+  color: var(--color-vault-light);
   color: var(--color-vault-text);
   font-family: var(--font-body);
   font-size: 0.85rem;
 }
-
 @media (max-width: 640px) {
   .form-input {
     width: 100%;
   }
 }
-
 .form-input::placeholder {
   color: rgba(var(--color-vault-lavender-rgb), 0.4);
 }
-
 .form-input:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-
 .error-message {
   display: flex;
   align-items: center;
@@ -163,7 +145,6 @@
   font-family: var(--font-mono);
   font-size: 0.85rem;
 }
-
 .login-button {
   display: flex;
   align-items: center;
@@ -186,7 +167,6 @@
   transition: all 0.3s ease;
   text-transform: uppercase;
 }
-
 .login-button:hover:not(:disabled) {
   background: linear-gradient(
     135deg,
@@ -197,28 +177,23 @@
   box-shadow: 0 0 20px rgba(var(--color-vault-lavender-rgb), 0.25);
   transform: translateY(-2px);
 }
-
 .login-button:active:not(:disabled) {
   transform: translateY(0);
 }
-
 .login-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-
 .loading-spinner {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-
 .login-footer {
   text-align: center;
   padding-top: 1rem;
   border-top: 1px solid rgba(var(--color-vault-lavender-rgb), 0.1);
 }
-
 .login-info {
   font-family: var(--font-body);
   font-size: 0.8rem;
@@ -226,37 +201,30 @@
   margin: 0 0 1rem 0;
   line-height: 1.5;
 }
-
 .signup-prompt {
   font-size: 0.85rem;
   color: rgba(var(--color-vault-lavender-rgb), 0.7);
   margin: 0;
 }
-
 .signup-link {
   color: var(--color-vault-lavender);
   text-decoration: none;
   font-weight: 600;
   transition: all 0.25s ease;
 }
-
 .signup-link:hover {
   text-decoration: underline;
   opacity: 0.8;
 }
-
 /* Decorations and Keyframes migrated to AuthLayout.css */
-
 /* Responsive */
 @media (max-width: 480px) {
   .login-card {
     padding: 2rem 1.5rem;
   }
-
   .login-title {
     font-size: 1.5rem;
   }
-
   .login-button {
     width: 100%;
   }

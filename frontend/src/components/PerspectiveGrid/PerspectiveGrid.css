@@ -6,9 +6,9 @@
   overflow: hidden;
   background: transparent;
   --perspective-fade-stop: #0a0f18; /* Matched to dark theme blue-black */
+  --perspective-fade-stop: var(--color-vault-darker); /* Adapts to active theme */
   z-index: 0;
 }
-
 .perspective-grid-canvas {
   position: absolute;
   left: 50%;
@@ -20,18 +20,15 @@
   image-rendering: auto; 
   pointer-events: none; /* Mouse tracking handled by window listener in JSX */
 }
-
 /* Auth pages can override this for more impact */
 .login-page ~ .perspective-grid-container,
 .signup-page ~ .perspective-grid-container {
   opacity: 0.6;
 }
-
 .perspective-grid-overlay {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 10;
 }
-
 /* (Removed 1,600 individual tile DOM rules for 60FPS performance) */

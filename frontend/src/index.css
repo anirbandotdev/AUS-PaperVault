@@ -1,10 +1,8 @@
 @import "tailwindcss";
-
 /* ═══════════════════════════════════════════════════════════
    AUS PAPERVAULT — Design System
    Cyberpunk × Glassmorphism × Minimal Brutalism
    ═══════════════════════════════════════════════════════════ */
-
 @theme {
   --color-vault-dark: #171a21;
   --color-vault-darker: #0d0f14;
@@ -24,7 +22,6 @@
   --color-vault-danger-rgb: 248, 113, 113;
   --color-vault-white-rgb: 255, 255, 255;
   --color-vault-black-rgb: 0, 0, 0;
-
   --color-vault-glow: rgba(var(--color-vault-lavender-rgb), 0.3);
   --color-vault-border: rgba(122, 147, 172, 0.2);
   --color-vault-glass: rgba(var(--color-vault-dark-rgb), 0.7);
@@ -34,57 +31,58 @@
   --color-vault-danger: #f87171;
   --color-vault-warning: #fbbf24;
   --color-vault-text: #e2e8f0;
-
   --font-heading: 'Orbitron', monospace, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
-
 [data-theme="light"] {
   --color-vault-dark: #f8fafc;
   --color-vault-darker: #f1f5f9;
   --color-vault-card: #ffffff;
   --color-vault-gray: #64748b;
   --color-vault-steel: #94a3b8;
+  --color-vault-gray: #475569;
+  --color-vault-steel: #64748b;
   --color-vault-blue: #3b82f6;
   --color-vault-lavender: #4f46e5;
   --color-vault-neon: #6366f1;
-
   --color-vault-dark-rgb: 248, 250, 252;
   --color-vault-darker-rgb: 241, 245, 249;
   --color-vault-card-rgb: 255, 255, 255;
   --color-vault-card-alt-rgb: 248, 250, 252;
   --color-vault-overlay-rgb: 255, 255, 255;
+  --color-vault-overlay-rgb: 241, 245, 249;
   --color-vault-lavender-rgb: 79, 70, 229;
   --color-vault-danger-rgb: 220, 38, 38;
   --color-vault-white-rgb: 0, 0, 0; /* Inverted for light mode */
   --color-vault-black-rgb: 255, 255, 255; /* Inverted for light mode */
-
+  --color-vault-white-rgb: 30, 41, 59; /* Dark slate for subtle borders/highlights on light bg */
+  --color-vault-black-rgb: 0, 0, 0; /* Keep black as black for shadows in light mode */
   --color-vault-glow: rgba(79, 70, 229, 0.2);
   --color-vault-border: rgba(148, 163, 184, 0.3);
   --color-vault-glass: rgba(var(--color-vault-white-rgb), 0.85);
   --color-vault-glass-light: rgba(var(--color-vault-white-rgb), 0.6);
+  --color-vault-border: rgba(148, 163, 184, 0.35);
+  --color-vault-glass: rgba(255, 255, 255, 0.85);
+  --color-vault-glass-light: rgba(255, 255, 255, 0.6);
   --color-vault-success: #16a34a;
   --color-vault-online: #0891b2;
   --color-vault-danger: #dc2626;
   --color-vault-warning: #d97706;
   --color-vault-text: #334155;
 }
-
 /* ───── Base Reset ───── */
 *, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--color-vault-steel) var(--color-vault-dark);
   overflow-x: hidden;
 }
-
 body {
   font-family: var(--font-body);
   background-color: var(--color-vault-darker);
@@ -92,25 +90,22 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   min-height: 100vh;
+  min-height: 100dvh;
 }
-
 img {
   max-width: 100%;
   height: auto;
 }
-
 button,
 input,
 select,
 textarea {
   min-width: 0;
 }
-
 .glass-card,
 .glass {
   max-width: 100%;
 }
-
 @media (max-width: 640px) {
   .btn-cyber,
   .btn-cyber-solid,
@@ -119,7 +114,6 @@ textarea {
     justify-content: center;
   }
 }
-
 /* ───── Custom Scrollbar (Webkit) ───── */
 ::-webkit-scrollbar {
   width: 6px;
@@ -134,13 +128,12 @@ textarea {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-vault-lavender);
 }
-
 /* ───── Selection ───── */
 ::selection {
   background: rgba(var(--color-vault-lavender-rgb), 0.3);
   color: #fff;
+  color: var(--color-vault-text);
 }
-
 /* ═══════════════════════════════════════════════════════════
    GLASSMORPHISM UTILITIES
    ═══════════════════════════════════════════════════════════ */
@@ -150,14 +143,12 @@ textarea {
   -webkit-backdrop-filter: blur(16px) saturate(1.2);
   border: 1px solid var(--color-vault-border);
 }
-
 .glass-light {
   background: var(--color-vault-glass-light);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(122, 147, 172, 0.15);
 }
-
 .glass-card {
   background: linear-gradient(135deg, rgba(var(--color-vault-card-rgb), 0.9) 0%, rgba(var(--color-vault-dark-rgb), 0.95) 100%);
   backdrop-filter: blur(20px);
@@ -165,13 +156,11 @@ textarea {
   border: 1px solid var(--color-vault-border);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .glass-card:hover {
   border-color: rgba(var(--color-vault-lavender-rgb), 0.4);
   box-shadow: 0 0 20px rgba(var(--color-vault-lavender-rgb), 0.1), inset 0 1px 0 rgba(var(--color-vault-lavender-rgb), 0.1);
   transform: translateY(-2px);
 }
-
 /* ═══════════════════════════════════════════════════════════
    NEON GLOW UTILITIES
    ═══════════════════════════════════════════════════════════ */
@@ -182,40 +171,33 @@ textarea {
     0 0 20px rgba(var(--color-vault-lavender-rgb), 0.3),
     0 0 42px rgba(var(--color-vault-lavender-rgb), 0.1);
 }
-
 .neon-border {
   box-shadow:
     0 0 5px rgba(var(--color-vault-lavender-rgb), 0.2),
     0 0 15px rgba(var(--color-vault-lavender-rgb), 0.1),
     inset 0 0 5px rgba(var(--color-vault-lavender-rgb), 0.05);
 }
-
 .neon-glow {
   box-shadow:
     0 0 10px rgba(var(--color-vault-lavender-rgb), 0.3),
     0 0 30px rgba(var(--color-vault-lavender-rgb), 0.15),
     0 0 60px rgba(var(--color-vault-lavender-rgb), 0.05);
 }
-
 /* ═══════════════════════════════════════════════════════════
    BRUTALIST UTILITIES
    ═══════════════════════════════════════════════════════════ */
 .brutal-border {
   border: 2px solid var(--color-vault-steel);
 }
-
 .brutal-border-thick {
   border: 3px solid var(--color-vault-lavender);
 }
-
 .brutal-shadow {
   box-shadow: 4px 4px 0 var(--color-vault-steel);
 }
-
 .brutal-shadow-neon {
   box-shadow: 4px 4px 0 var(--color-vault-lavender);
 }
-
 /* ═══════════════════════════════════════════════════════════
    ANIMATIONS
    ═══════════════════════════════════════════════════════════ */
@@ -223,12 +205,10 @@ textarea {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
 }
-
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
-
 @keyframes glitch {
   0% { transform: translate(0); }
   20% { transform: translate(-2px, 2px); }
@@ -237,52 +217,42 @@ textarea {
   80% { transform: translate(2px, -2px); }
   100% { transform: translate(0); }
 }
-
 @keyframes scanline {
   0% { transform: translateY(-100%); }
   100% { transform: translateY(100vh); }
 }
-
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes slideIn {
   from { opacity: 0; transform: translateX(-20px); }
   to { opacity: 1; transform: translateX(0); }
 }
-
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-
 @keyframes borderGlow {
   0%, 100% { border-color: rgba(var(--color-vault-lavender-rgb), 0.2); }
   50% { border-color: rgba(var(--color-vault-lavender-rgb), 0.6); }
 }
-
 @keyframes countUp {
   from { opacity: 0; transform: scale(0.5); }
   to { opacity: 1; transform: scale(1); }
 }
-
 @keyframes gridPulse {
   0%, 100% { opacity: 0.03; }
   50% { opacity: 0.08; }
 }
-
 @keyframes typewriter {
   from { width: 0; }
   to { width: 100%; }
 }
-
 @keyframes blink {
   0%, 100% { border-color: var(--color-vault-lavender); }
   50% { border-color: transparent; }
 }
-
 /* ───── Animation Utilities ───── */
 .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
 .animate-float { animation: float 3s ease-in-out infinite; }
@@ -292,7 +262,6 @@ textarea {
 .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }
 .animate-borderGlow { animation: borderGlow 2s ease-in-out infinite; }
 .animate-gridPulse { animation: gridPulse 4s ease-in-out infinite; }
-
 /* ───── Stagger Delays ───── */
 .stagger-1 { animation-delay: 0.1s; }
 .stagger-2 { animation-delay: 0.2s; }
@@ -302,7 +271,6 @@ textarea {
 .stagger-6 { animation-delay: 0.6s; }
 .stagger-7 { animation-delay: 0.7s; }
 .stagger-8 { animation-delay: 0.8s; }
-
 /* ═══════════════════════════════════════════════════════════
    GRID BACKGROUND PATTERN
    ═══════════════════════════════════════════════════════════ */
@@ -320,7 +288,6 @@ textarea {
   pointer-events: none;
   animation: gridPulse 4s ease-in-out infinite;
 }
-
 /* Scanline overlay */
 .scanline-overlay::after {
   content: '';
@@ -333,7 +300,6 @@ textarea {
   animation: scanline 6s linear infinite;
   pointer-events: none;
 }
-
 /* ═══════════════════════════════════════════════════════════
    BUTTON STYLES
    ═══════════════════════════════════════════════════════════ */
@@ -355,18 +321,15 @@ textarea {
   transition: all 0.3s ease;
   text-decoration: none;
 }
-
 .btn-cyber:hover {
   background: rgba(var(--color-vault-lavender-rgb), 0.15);
   border-color: var(--color-vault-lavender);
   box-shadow: 0 0 20px rgba(var(--color-vault-lavender-rgb), 0.2), inset 0 0 20px rgba(var(--color-vault-lavender-rgb), 0.05);
   transform: translateY(-1px);
 }
-
 .btn-cyber:active {
   transform: translateY(0);
 }
-
 .btn-cyber-solid {
   position: relative;
   display: inline-flex;
@@ -385,13 +348,11 @@ textarea {
   transition: all 0.3s ease;
   text-decoration: none;
 }
-
 .btn-cyber-solid:hover {
   background: #c4c7ff;
   box-shadow: 0 0 25px rgba(var(--color-vault-lavender-rgb), 0.4);
   transform: translateY(-1px);
 }
-
 .btn-cyber-danger {
   position: relative;
   display: inline-flex;
@@ -410,13 +371,11 @@ textarea {
   transition: all 0.3s ease;
   text-decoration: none;
 }
-
 .btn-cyber-danger:hover {
   background: rgba(var(--color-vault-danger-rgb), 0.15);
   border-color: var(--color-vault-danger);
   box-shadow: 0 0 20px rgba(var(--color-vault-danger-rgb), 0.2);
 }
-
 /* ═══════════════════════════════════════════════════════════
    FORM STYLES
    ═══════════════════════════════════════════════════════════ */
@@ -426,27 +385,26 @@ textarea {
   font-family: var(--font-body);
   font-size: 0.9rem;
   color: #8a8d92;
+  color: var(--color-vault-text);
   background: rgba(var(--color-vault-dark-rgb), 0.8);
   border: 1px solid var(--color-vault-border);
   outline: none;
   transition: all 0.3s ease;
 }
-
 .input-cyber:focus {
   border-color: var(--color-vault-lavender);
   box-shadow: 0 0 10px rgba(var(--color-vault-lavender-rgb), 0.15);
 }
-
 .input-cyber::placeholder {
   color: var(--color-vault-gray);
 }
-
 .select-cyber {
   width: 100%;
   padding: 0.75rem 1rem;
   font-family: var(--font-body);
   font-size: 0.9rem;
   color: #8a8d92;
+  color: var(--color-vault-text);
   background: rgba(var(--color-vault-dark-rgb), 0.8);
   border: 1px solid var(--color-vault-border);
   outline: none;
@@ -457,19 +415,16 @@ textarea {
   background-repeat: no-repeat;
   background-position: right 1rem center;
 }
-
 .select-cyber:focus {
   border-color: var(--color-vault-lavender);
   box-shadow: 0 0 10px rgba(var(--color-vault-lavender-rgb), 0.15);
 }
-
 /* ═══════════════════════════════════════════════════════════
    PAGE TRANSITION WRAPPER
    ═══════════════════════════════════════════════════════════ */
 .page-enter {
   animation: slideUp 0.5s ease-out forwards;
 }
-
 /* ═══════════════════════════════════════════════════════════
    RESPONSIVE CONTAINER
    ═══════════════════════════════════════════════════════════ */
@@ -477,13 +432,49 @@ textarea {
   width: 100%;
   max-width: 1280px;
   margin-inline: auto;
-  padding-inline: 1rem;
+  padding-left: max(1rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1rem, env(safe-area-inset-right, 0px));
 }
-
 @media (min-width: 640px) {
-  .container-vault { padding-inline: 1.5rem; }
+  .container-vault {
+    padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+  }
 }
-
 @media (min-width: 1024px) {
-  .container-vault { padding-inline: 2rem; }
+  .container-vault {
+    padding-left: max(2rem, env(safe-area-inset-left, 0px));
+    padding-right: max(2rem, env(safe-area-inset-right, 0px));
+  }
+}
+/* ═══════════════════════════════════════════════════════════
+   LIGHT THEME — Component Overrides
+   Only visual refinements that cannot be handled by
+   CSS custom-property swaps above.
+   ═══════════════════════════════════════════════════════════ */
+[data-theme="light"] .neon-text {
+  text-shadow: none;
+}
+[data-theme="light"] .neon-border {
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    0 0 8px rgba(79, 70, 229, 0.1);
+}
+[data-theme="light"] .neon-glow {
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    0 0 16px rgba(79, 70, 229, 0.08);
+}
+[data-theme="light"] .btn-cyber-solid:hover {
+  background: #4338ca;
+}
+[data-theme="light"] .glass-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 0 12px rgba(79, 70, 229, 0.08);
+}
+[data-theme="light"] .input-cyber,
+[data-theme="light"] .select-cyber {
+  background: rgba(248, 250, 252, 0.9);
+}
+[data-theme="light"] .cyber-grid::before {
+  opacity: 0.5;
 }
