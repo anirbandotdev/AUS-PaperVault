@@ -125,10 +125,10 @@ export const GlassDock = React.forwardRef(
                     size={22}
                     strokeWidth={2}
                     className={cn(
-                      'transition-colors duration-200',
+                      'transition-all duration-300',
                       isHovered
-                        ? 'text-[#afb3f7]'
-                        : 'text-[#607b96]'
+                        ? 'text-[color:var(--color-vault-lavender)] drop-shadow-[0_0_8px_rgba(var(--color-vault-lavender-rgb),0.6)]'
+                        : 'text-[color:var(--color-vault-steel)] opacity-80'
                     )}
                   />
                 </motion.div>

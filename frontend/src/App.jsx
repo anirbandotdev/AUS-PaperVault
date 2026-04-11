@@ -76,17 +76,18 @@ function AppLayout() {
 
   const { user } = useAuth();
 
-  if (!user || ["Member" , "Moderator" , "Reviewer"].includes(user.role)) {
-    if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") {
-      window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
-    }
+  
     useEffect(() => {
-      const handleContextMenu = (e) => {
-        e.preventDefault();
-      };
+      if (!user || ["Member" , "Moderator" , "Reviewer"].includes(user.role)) {
+        if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") {
+          window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
+        }
+        const handleContextMenu = (e) => {
+          e.preventDefault();
+        };
 
-      const handleKeyDown = (e) => {
-        // F12
+        const handleKeyDown = (e) => {
+          // F12
         if (e.key === "F12") {
           e.preventDefault();
         }
@@ -102,13 +103,13 @@ function AppLayout() {
 
       document.addEventListener("contextmenu", handleContextMenu);
       document.addEventListener("keydown", handleKeyDown);
-
+    }
       return () => {
         document.removeEventListener("contextmenu", handleContextMenu);
         document.removeEventListener("keydown", handleKeyDown);
       };
     }, []);
-  }
+  
 
   return (
     <>
