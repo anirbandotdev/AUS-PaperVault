@@ -228,7 +228,7 @@
   z-index: 10;
   width: 100%;
   padding: 4rem 1.5rem 1.5rem;
-  background: linear-gradient(to top, rgba(10, 12, 16, 0.98) 0%, rgba(10, 12, 16, 0.8) 40%, transparent 100%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 50%, transparent 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -329,11 +329,11 @@
   font-family: var(--font-heading);
   font-size: 1.25rem;
   font-weight: 800;
-  color: var(--color-vault-text);
+  color: #ffffff;
   margin: 0;
   text-align: center;
   letter-spacing: 0.02em;
-  text-shadow: 0 2px 10px rgba(var(--color-vault-black-rgb), 0.8);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .dev-front-role {
@@ -341,14 +341,15 @@
   font-size: 0.65rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--color-vault-lavender);
+  color: #ffffff;
   text-align: center;
   font-weight: 600;
   padding: 0.25rem 0.8rem;
-  background: rgba(var(--color-vault-lavender-rgb), 0.12);
-  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.25);
+  background: rgba(175, 179, 247, 0.3);
+  border: 1px solid rgba(175, 179, 247, 0.6);
   border-radius: 4px;
   backdrop-filter: blur(4px);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 /* Hover hint */
@@ -372,10 +373,10 @@
 
 /* ── Back face (Frosted overlay) ── */
 .dev-face-back {
-  background: rgba(14, 18, 25, 0.65);
+  background: rgba(var(--color-vault-card-alt-rgb), 0.85);
   backdrop-filter: blur(20px) saturate(130%);
   -webkit-backdrop-filter: blur(20px) saturate(130%);
-  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
+  border: 1px solid var(--color-vault-border);
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
@@ -422,22 +423,21 @@
   font-size: 0.55rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(97, 218, 251, 0.75);
+  color: var(--color-vault-blue);
   padding: 0.15rem 0.5rem;
-  background: rgba(97, 218, 251, 0.07);
-  border: 1px solid rgba(97, 218, 251, 0.2);
+  border: 1px solid var(--color-vault-border);
   border-radius: 2px;
 }
 
 .dev-bio {
   font-size: 0.85rem;
-  color: rgba(200, 210, 220, 0.9);
+  color: var(--color-vault-gray);
   line-height: 1.6;
   margin: 0;
   flex: 1;
   padding: 0.75rem 0;
-  border-top: 1px solid rgba(122, 147, 172, 0.08);
-  border-bottom: 1px solid rgba(122, 147, 172, 0.08);
+  border-top: 1px solid var(--color-vault-border);
+  border-bottom: 1px solid var(--color-vault-border);
 }
 
 .dev-skills {
@@ -452,8 +452,7 @@
   font-size: 0.52rem;
   letter-spacing: 0.06em;
   padding: 0.18rem 0.45rem;
-  background: rgba(146, 188, 234, 0.06);
-  border: 1px solid rgba(146, 188, 234, 0.15);
+  border: 1px solid var(--color-vault-border);
   color: var(--color-vault-steel);
   border-radius: 2px;
 }
