@@ -1,0 +1,229 @@
+import { Router } from "express";
+import User from "../models/user.model.js";
+import EmailVerification from "../models/emailVerification.model.js";
+import { sendVerificationEmail, sendWelcomeEmail } from "../services/email.js";
+import { sendError, sendSuccess } from "../utils/apiResponse.js";
+import { STATUS_CODES } from "../utils/statusCodes.js";
+
+const emailRouter = Router();
+
+const generateOTP = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
+emailRouter.post("/send-verification", async (req, res) => {
+    try {
+        const { username, email } = req.body;
+
+        if (!username || !email) {
+            return sendError(
+                res,
+                "Username and email are required",
+                STATUS_CODES.BAD_REQUEST
+            );
+        }
+
+        const user = await User.findOne({ $or: [{ username }, { email }] });
+
+        if (user) {
+            return sendError(res, "User already exists", STATUS_CODES.NOT_FOUND);
+        }
+
+
+        await EmailVerification.deleteMany({ email });
+
+        const otp = generateOTP();
+        const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
+
+        await EmailVerification.create({
+            username,
+            email,
+            otp,
+            otpExpiry,
+        });
+        await sendVerificationEmail(email, otp, username);
+        return sendSuccess(
+            res,
+            "OTP sent successfully to your email",
+            STATUS_CODES.SUCCESS,
+            { email, message: "Check your email for OTP" }
+        );
+    } catch (error) {
+        console.error("Error in send-verification:", error);
+        return sendError(
+            res,
+            "Error sending verification email",
+            STATUS_CODES.SERVER_ERROR,
+            error.message
+        );
+    }
+});
+
+emailRouter.post("/verify-otp", async (req, res) => {
+    try {
+        const { username , email , otp } = req.body;
+
+        if (!username || !email || !otp) {
+            return sendError(
+                res,
+                "Username , email and OTP are required",
+                STATUS_CODES.BAD_REQUEST
+            );
+        }
+
+        const verification = await EmailVerification.findOne({ email });
+
+        if (!verification) {
+            return sendError(
+                res,
+                "No OTP request found for this user",
+                STATUS_CODES.NOT_FOUND
+            );
+        }
+
+        if (verification.otpExpiry < new Date()) {
+            await EmailVerification.deleteOne({ email });
+            return sendError(
+                res,
+                "OTP has expired. Please request a new OTP.",
+                STATUS_CODES.FORBIDDEN
+            );
+        }
+
+        if (verification.otp !== otp) {
+            verification.attempts += 1;
+            await verification.save();
+
+            const remainingAttempts =
+                verification.maxAttempts - verification.attempts;
+            if (remainingAttempts <= 0) {
+                await EmailVerification.deleteOne({ email });
+                return sendError(
+                    res,
+                    "Too many incorrect OTP attempts. Please request a new OTP.",
+                    STATUS_CODES.FORBIDDEN
+                );
+            }
+
+            return sendError(
+                res,
+                `Invalid OTP. ${remainingAttempts} attempts remaining.`,
+                STATUS_CODES.FORBIDDEN
+            );
+        }
+        verification.isVerified = true;
+        verification.verifiedAt = new Date();
+        verification.attempts = 0;
+        await verification.save();
+
+        await sendWelcomeEmail(email, username);
+
+        return sendSuccess(
+            res,
+            "Email verified successfully! Welcome to AUS PaperVault.",
+            STATUS_CODES.SUCCESS,
+            {
+                verified: true,
+                email: email,
+                username: username,
+            }
+        );
+    } catch (error) {
+        console.error("Error in verify-otp:", error);
+        return sendError(
+            res,
+            "Error verifying OTP",
+            STATUS_CODES.SERVER_ERROR,
+            error.message
+        );
+    }
+});
+
+emailRouter.post("/resend-otp", async (req, res) => {
+    try {
+        const { userId, email } = req.body;
+
+        if (!userId || !email) {
+            return sendError(
+                res,
+                "User ID and email are required",
+                STATUS_CODES.BAD_REQUEST
+            );
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return sendError(res, "User not found", STATUS_CODES.NOT_FOUND);
+        }
+
+        if (user.isVerified) {
+            return sendError(
+                res,
+                "User email is already verified",
+                STATUS_CODES.FORBIDDEN
+            );
+        }
+
+        await EmailVerification.deleteMany({ userId });
+
+        const otp = generateOTP();
+        const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
+
+        await EmailVerification.create({
+            username,
+            email,
+            otp,
+            otpExpiry,
+        });
+
+        await sendVerificationEmail(email, otp, username);
+
+        return sendSuccess(
+            res,
+            "OTP resent successfully",
+            STATUS_CODES.SUCCESS,
+            { email, message: "Check your email for the new OTP" }
+        );
+    } catch (error) {
+        console.error("Error in resend-otp:", error);
+        return sendError(
+            res,
+            "Error resending OTP",
+            STATUS_CODES.SERVER_ERROR,
+            error.message
+        );
+    }
+});
+
+emailRouter.get("/check-verification/:userId", async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return sendError(res, "User not found", STATUS_CODES.NOT_FOUND);
+        }
+
+        return sendSuccess(
+            res,
+            "Verification status retrieved",
+            STATUS_CODES.SUCCESS,
+            {
+                email: user.email,
+                verified: user.isVerified,
+                userId: user._id,
+            }
+        );
+    } catch (error) {
+        console.error("Error in check-verification:", error);
+        return sendError(
+            res,
+            "Error checking verification status",
+            STATUS_CODES.SERVER_ERROR,
+            error.message
+        );
+    }
+});
+
+export default emailRouter;
