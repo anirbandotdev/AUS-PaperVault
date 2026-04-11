@@ -1,6 +1,4 @@
 import { apiFetch } from "../api/api";
-import { notifySuperAdminEvent } from "./adminNotifications";
-
 export const getUsers = async () => {
   try {
     const token = localStorage.getItem("access_token");
@@ -57,21 +55,8 @@ export const updateStaff = async (username, role) => {
 
       window.dispatchEvent(new CustomEvent("staffUpdated"));
       if (!res.success) {
-        notifySuperAdminEvent({
-          title: "Error in granting staff role",
-          body: `${username} is not granted ${role} access.`,
-          linkTab: "staff",
-          type: "staff",
-        });
         return { success: false };
       }
-
-      notifySuperAdminEvent({
-        title: "Staff role updated",
-        body: `${username} is granted ${role} access.`,
-        linkTab: "staff",
-        type: "staff",
-      });
 
       return { success: true };
     } else {
@@ -79,12 +64,6 @@ export const updateStaff = async (username, role) => {
     }
   } catch (err) {
     window.dispatchEvent(new CustomEvent("staffUpdated"));
-    notifySuperAdminEvent({
-      title: `Already has ${role} access`,
-      body: `${username} is a ${role} only.`,
-      linkTab: "staff",
-      type: "staff",
-    });
     return { success: false };
   }
 };
@@ -112,24 +91,12 @@ export const removeStaff = async (st) => {
     console.log(res)
     if (res.success) {
       window.dispatchEvent(new CustomEvent("staffUpdated"));
-      notifySuperAdminEvent({
-        title: "Staff access revoked",
-        body: `Removed admin access for ${st.username}.`,
-        linkTab: "staff",
-        type: "staff",
-      });
       return { success: true };
     } else {
       throw new Error();
     }
   } catch (err) {
     window.dispatchEvent(new CustomEvent("staffUpdated"));
-    notifySuperAdminEvent({
-      title: `Error in revoking staff access`,
-      body: `${st.username} is still a ${st.role}.`,
-      linkTab: "staff",
-      type: "staff",
-    });
     return { success: false };
   }
 };

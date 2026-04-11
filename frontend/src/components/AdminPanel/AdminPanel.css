@@ -2069,3 +2069,93 @@ select.admin-form-input option {
     margin-left: 0;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   GLOBAL ADMIN PANEL RESPONSIVENESS OVERRIDES
+   ═══════════════════════════════════════════════════════════ */
+
+/* Enable scrollable horizontal tabs to prevent wrapping breaks */
+.admin-tabs {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-tabs::-webkit-scrollbar {
+  height: 0px; 
+  display: none; 
+}
+
+@media (max-width: 900px) {
+  /* Make sure sidebars convert cleanly without trapping content */
+  .admin-sidebar {
+    width: 100%;
+    max-height: none;
+    min-height: fit-content;
+  }
+
+  /* Wrap sidebar stat cards gracefully */
+  .admin-sidebar-stats {
+    flex-wrap: wrap;
+  }
+  .admin-sidebar-stat {
+    min-width: 120px;
+    border-bottom: 1px solid rgba(var(--color-vault-lavender-rgb), 0.04);
+  }
+}
+
+@media (max-width: 768px) {
+  /* Shrink top header & hide non-essential text */
+  .admin-topbar {
+    padding: 0.5rem 0.75rem;
+    gap: 0.5rem;
+  }
+  .admin-topbar-title {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+  .admin-node-status,
+  .admin-exit-text,
+  .admin-user-text {
+    display: none;
+  }
+
+  /* Form/Action Bar wrap */
+  .admin-action-bar {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Grid fallbacks for smaller phones */
+  .admin-catalog-papers-grid,
+  .admin-departments-grid,
+  .admin-analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Ultra-small phones fixes for Review Header */
+  .admin-review-header-left {
+    width: 100%;
+  }
+  .admin-review-header-right {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .admin-review-subject {
+    font-size: 1.1rem;
+  }
+}
+
+.admin-tabs > * {
+  flex-shrink: 0;
+}
+
+.admin-tabs {
+  gap: 1rem;
+  padding: 0 1.25rem;
+}
