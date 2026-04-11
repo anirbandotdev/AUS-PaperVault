@@ -16,7 +16,7 @@ export default function FeedbackTab() {
 
   useEffect(() => {
     const fetchFeedbacks = async () => {
-      const data = await getFeedback();
+      const data = await getFeedback() || [];
       setFeedbacks(data);
     };
 
