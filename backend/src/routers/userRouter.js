@@ -217,7 +217,8 @@ userRouter.post("/login", async (req, res) => {
 });
 
 userRouter.post("/delete", async (req, res) => {
-    
+
+
 });
 
 export default userRouter;

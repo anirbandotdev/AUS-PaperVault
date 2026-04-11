@@ -12,4 +12,14 @@ const staffSchema = z.object({
     ]),
 });
 
+export const updateStaffSchema = z.object({
+    username: z.string(),
+    role: z.enum([
+        ROLES.SUPER_ADMIN,
+        ROLES.MODERATOR,
+        ROLES.REVIEWER,
+        ROLES.MEMBER,
+    ]),
+});
+
 export default staffSchema;
