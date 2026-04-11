@@ -84,6 +84,25 @@
   color: rgba(var(--color-vault-lavender-rgb), 0.7);
 }
 
+.password-label-row {
+  display: flex;
+  justify-content:end;
+  align-items: center;
+}
+
+.forgot-password-link {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: rgba(var(--color-vault-lavender-rgb), 0.8);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+  color: var(--color-vault-lavender);
+}
+
 .input-wrapper {
   display: flex;
   align-items: center;

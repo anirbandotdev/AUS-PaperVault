@@ -344,7 +344,7 @@ export default function CatalogTab({
                 catalogTab === tab
                   ? "1px solid rgba(175, 179, 247, 0.5)"
                   : "1px solid rgba(175, 179, 247, 0.1)",
-              color: "#e6edf3",
+              color: "#8a8d92",
               borderRadius: "6px",
               cursor: "pointer",
               transition: "all 0.2s ease",

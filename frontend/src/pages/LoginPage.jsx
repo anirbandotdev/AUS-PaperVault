@@ -115,6 +115,11 @@ export default function LoginPage() {
                   disabled={isLoading}
                 />
               </div>
+              <div className="password-label-row">
+                <Link to="/reset-password" className="forgot-password-link">
+                  Forgot Password?
+                </Link>
+              </div>
             </div>
 
             {/* Error Message */}
