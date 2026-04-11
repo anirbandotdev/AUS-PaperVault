@@ -183,6 +183,29 @@ export default function SignUpPage() {
     }
   };
 
+  const handleResendCode = async () => {
+    try {
+      import("sonner").then(({ toast }) => {
+        toast.success("Verification code resent!");
+      });
+      const otpResend = await apiFetch("/email/resend-otp", "POST", {
+        body: {
+          username: formData.username.trim(),
+          email: formData.email.trim(),
+        },
+      });
+      if (!otpResend.success) {
+        import("sonner").then(({ toast }) => {
+          toast.error("Error in sending verification code");
+        });
+      }
+    } catch (err) {
+      import("sonner").then(({ toast }) => {
+        toast.error("Error in sending verification code");
+      });
+    }
+  };
+
   const getPasswordStrengthLabel = () => {
     const labels = ["", "Weak", "Fair", "Good", "Strong"];
     return labels[passwordStrength] || "";
@@ -444,9 +467,19 @@ export default function SignUpPage() {
 
             {/* Submit Button & Loader */}
             {isSendingCode ? (
-              <div className="verification-loading-view" style={{ padding: "1rem 0" }}>
+              <div
+                className="verification-loading-view"
+                style={{ padding: "1rem 0" }}
+              >
                 <div className="theme-loader"></div>
-                <p className="verification-subtitle" style={{ margin: "1rem 0 0 0", fontSize: "0.9rem", color: "var(--color-vault-lavender)" }}>
+                <p
+                  className="verification-subtitle"
+                  style={{
+                    margin: "1rem 0 0 0",
+                    fontSize: "0.9rem",
+                    color: "var(--color-vault-lavender)",
+                  }}
+                >
                   Please Wait! Creating Your Account...
                 </p>
               </div>
@@ -535,17 +568,26 @@ export default function SignUpPage() {
                 </button>
               </div>
 
-              <div className="resend-wrapper" style={{ marginTop: "1rem", fontSize: "0.85rem", color: "var(--color-vault-gray)" }}>
+              <div
+                className="resend-wrapper"
+                style={{
+                  marginTop: "1rem",
+                  fontSize: "0.85rem",
+                  color: "var(--color-vault-gray)",
+                }}
+              >
                 Didn't receive the code?{" "}
-                <button 
-                  type="button" 
-                  onClick={() => {
-                    import("sonner").then(({ toast }) => {
-                      toast.success("Verification code resent!");
-                    });
-                  }}
+                <button
+                  type="button"
+                  onClick={handleResendCode}
                   className="terms-link"
-                  style={{ background: "none", border: "none", padding: 0, font: "inherit", cursor: "pointer" }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    font: "inherit",
+                    cursor: "pointer",
+                  }}
                 >
                   Resend Code
                 </button>
