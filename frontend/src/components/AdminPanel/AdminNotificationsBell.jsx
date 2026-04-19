@@ -9,7 +9,9 @@ import {
   isAdminNotificationRead,
   markAdminNotificationRead,
   markAllAdminNotificationsRead,
+  pushAdminNotification,
 } from "../../data/adminNotifications";
+import { socket } from "../../api/socket";
 
 const LINK_TAB_HINT = {
   review: "Open review queue",
@@ -56,9 +58,16 @@ export default function AdminNotificationsBell({ currentAdmin, hasAccessToTab, s
   useEffect(() => {
     window.addEventListener(ADMIN_NOTIF_EVENT, refresh);
     window.addEventListener("storage", refresh);
+
+    const onRealtimeNotification = (data) => {
+      pushAdminNotification(data);
+    };
+    socket.on("admin_realtime_notification", onRealtimeNotification);
+
     return () => {
       window.removeEventListener(ADMIN_NOTIF_EVENT, refresh);
       window.removeEventListener("storage", refresh);
+      socket.off("admin_realtime_notification", onRealtimeNotification);
     };
   }, [refresh]);
 

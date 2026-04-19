@@ -5,6 +5,7 @@ import { sendSuccess, sendError } from "../utils/apiResponse.js";
 import { STATUS_CODES } from "../utils/statusCodes.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import File from "../models/file.model.js";
+import { io } from "../index.js";
 
 const fileRouter = Router();
 
@@ -32,6 +33,20 @@ fileRouter.post(
                 );
             }
             const newFile = await File.create({}); // will change it too
+
+            // Emits notification over web sockets globally
+            io.emit("admin_realtime_notification", {
+                audience: "all_staff",
+                type: "paper_upload",
+                title: "New question paper upload",
+                body: `A paper was submitted for review — ${req.file.originalname}.`,
+                linkTab: "review",
+                meta: {
+                    fileName: req.file.originalname,
+                    ...data
+                },
+            });
+
             return sendSuccess(
                 res,
                 "File uploaded successfully",

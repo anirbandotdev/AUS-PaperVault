@@ -5,6 +5,7 @@ import { feedbackSchema } from "../types/feedbackSchema.js";
 import Feedback from "../models/feedback.model.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { ROLES } from "../roles.js";
+import { io } from "../index.js";
 
 const feedbackRouter = Router();
 
@@ -26,6 +27,16 @@ feedbackRouter.post("/send", authMiddleware, async (req, res) => {
             username: req.user.username,
             email: req.user.email,
             message: data.message,
+        });
+
+        const preview = data.message.length > 120 ? `${data.message.slice(0, 120)}…` : data.message;
+        io.emit("admin_realtime_notification", {
+            audience: "moderators_and_super",
+            type: "feedback",
+            title: "New user feedback",
+            body: preview ? `${req.user.username}: ${preview}` : `${req.user.username} submitted feedback.`,
+            linkTab: "feedback",
+            meta: { name: req.user.username, preview },
         });
 
         sendSuccess(res, "Feedback sent successfully", STATUS_CODES.SUCCESS, {
