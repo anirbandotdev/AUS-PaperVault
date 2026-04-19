@@ -187,6 +187,7 @@ export default function SignUpPage() {
   };
 
   const handleResendCode = async () => {
+    setErrors((prev) => ({ ...prev, verify: null }));
     try {
       import("sonner").then(({ toast }) => {
         toast.success("Verification code resent!");
@@ -565,7 +566,15 @@ export default function SignUpPage() {
                 <button
                   type="submit"
                   className="btn-cyber-solid"
-                  disabled={isLoading || verificationCode.length < 6}
+                  disabled={
+                    isLoading || 
+                    verificationCode.length < 6 || 
+                    (errors.verify && (
+                      errors.verify.toLowerCase().includes("too many") ||
+                      errors.verify.toLowerCase().includes("expired") ||
+                      errors.verify.toLowerCase().includes("no otp")
+                    ))
+                  }
                 >
                   {isLoading ? "Verifying..." : "Verify & Sign Up"}
                 </button>
