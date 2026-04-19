@@ -4,7 +4,8 @@ async function getNgrokUrl() {
         const data = await res.json();
         return data.tunnels[0].public_url;
     } catch (err) {
-        console.log(err);
         return null;
     }
 }
+
+export default getNgrokUrl;
