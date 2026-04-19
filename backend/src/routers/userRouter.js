@@ -99,7 +99,7 @@ userRouter.post("/register", async (req, res) => {
             req.body;
 
         const user = await User.findOne({
-            $or: [{ username }, { email }, { phoneNumber }],
+            $or: [{ username }, { email }],
         });
 
         if (user) {
@@ -133,8 +133,9 @@ userRouter.post("/register", async (req, res) => {
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: true,
-            sameSite: "strict",
+            sameSite: "none",
             maxAge: 7 * 24 * 60 * 60 * 1000,
+            partitioned: true,
         });
         return sendSuccess(
             res,
@@ -186,8 +187,9 @@ userRouter.post("/login", async (req, res) => {
         res.cookie("refreshToken", user.refreshToken, {
             httpOnly: true,
             secure: true,
-            sameSite: "strict",
+            sameSite: "none",
             maxAge: 7 * 24 * 60 * 60 * 1000,
+            partitioned: true,
         });
 
         await user.save();
@@ -216,9 +218,6 @@ userRouter.post("/login", async (req, res) => {
     }
 });
 
-userRouter.post("/delete", async (req, res) => {
-
-
-});
+userRouter.post("/delete", async (req, res) => {});
 
 export default userRouter;
