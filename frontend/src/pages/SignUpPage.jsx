@@ -84,7 +84,7 @@ export default function SignUpPage() {
       newErrors.username = "Username is required";
     } else if (formData.username.length < 3) {
       newErrors.username = "Username must be at least 3 characters";
-    } else if (!/^[a-zA-Z0-9_-]+$/.test(formData.username)) {
+    } else if (!/^[a-zA-Z0-9_-]+$/.test(formData.username.trim())) {
       newErrors.username =
         "Username can only contain letters, numbers, hyphens, and underscores";
     }
