@@ -180,7 +180,6 @@ export default function Header() {
                     title={`Logged in as ${user.username}`}
                   >
                     <UserIcon size={16} />
-                    <span className="user-name">{user.username}</span>
                   </button>
                   {userMenuOpen && (
                     <div className="user-dropdown">
