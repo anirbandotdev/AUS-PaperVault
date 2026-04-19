@@ -101,14 +101,16 @@ emailRouter.post("/verify-otp", async (req, res) => {
                 return sendError(
                     res,
                     "Too many incorrect OTP attempts. Please request a new OTP.",
-                    STATUS_CODES.FORBIDDEN
+                    STATUS_CODES.FORBIDDEN,
+                    { attemptsLeft: 0 }
                 );
             }
 
             return sendError(
                 res,
                 `Invalid OTP. ${remainingAttempts} attempts remaining.`,
-                STATUS_CODES.FORBIDDEN
+                STATUS_CODES.FORBIDDEN,
+                { attemptsLeft: remainingAttempts }
             );
         }
         verification.isVerified = true;
