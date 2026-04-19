@@ -186,9 +186,20 @@ export default function Header() {
                       <div className="user-info">
                         <UserIcon size={16} />
                         <div className="user-details">
-                          <p className="user-email">{user.email}</p>
-                          <p className="user-role">({user.role})</p>
-                          <p className="user-name-small">Logged in</p>
+                          <div className="user-name-box">
+                            <p className="user-name">Username:{user.username}</p>
+                          </div>
+                          <div className="user-email-box">
+                            <p className="user-email">Email:{user.email}</p>
+                          </div>
+                          <div className="user-role-box">
+                            <p className="user-role-subpara">Role:
+                              <p className="user-role">{user.role}</p>
+                            </p>
+                          </div>
+                          <div className="user-status-box">
+                            <p className="user-name-small">Logged in</p>
+                          </div>
                         </div>
                       </div>
                       <hr className="dropdown-divider" />

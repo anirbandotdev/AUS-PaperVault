@@ -319,12 +319,12 @@
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.1rem;
+  height: 2.1rem;
   margin-left: 0.3rem;
   background: rgba(var(--color-vault-lavender-rgb), 0.06);
   border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
-  border-radius: 50%;
+  border-radius: 6px;
   color: var(--color-vault-lavender);
   cursor: pointer;
   font-size: 0.78rem;
@@ -342,14 +342,7 @@
   background: rgba(var(--color-vault-lavender-rgb), 0.15);
 }
 
-.user-name {
-  max-width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.02em;
-}
+
 
 .user-dropdown {
   position: absolute;
@@ -374,6 +367,7 @@
 }
 
 .user-info svg {
+  margin-top: 0.2rem;
   flex-shrink: 0;
   color: var(--color-vault-lavender);
 }
@@ -385,27 +379,83 @@
   min-width: 0;
 }
 
-.user-email {
-  font-size: 0.8rem;
-  color: var(--color-vault-lavender);
-  margin: 0;
-  font-weight: 600;
+.user-name-box{
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
+  width: fit-content;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.user-name {
   overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+}
+
+.user-email-box{
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
+  width: fit-content;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.user-email {
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.user-role {
+.user-role-box{
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
+  width: fit-content;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  
+}
+
+.user-role-subpara{
+  display: flex;
+  gap: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-mono);
   font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  align-items: center;
+}
+
+.user-role {
   text-transform: uppercase;
   color: rgba(var(--color-vault-lavender-rgb), 0.6);
   margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+}
+
+.user-status-box{
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
+  width: fit-content;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  display: flex;
+  align-items: center;
 }
 
 .user-name-small {
-  font-size: 0.7rem;
-  color: rgba(var(--color-vault-lavender-rgb), 0.6);
+  text-transform: uppercase;
+  color: rgb(146, 146, 11);
   margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  font-weight: bolder;
 }
 
 .dropdown-divider {
