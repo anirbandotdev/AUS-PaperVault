@@ -261,7 +261,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 1rem;
   border-bottom: 1px solid rgba(var(--color-vault-lavender-rgb), 0.06);
   background: rgba(var(--color-vault-darker-rgb), 0.4);
 }
@@ -287,7 +287,7 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-vault-lavender);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0rem;
 }
 
 .admin-review-target-dot {
@@ -302,7 +302,7 @@
   font-size: clamp(1.1rem, 2.5vw, 1.5rem);
   font-weight: 700;
   color: var(--color-vault-text);
-  margin-bottom: 0.6rem;
+  margin-bottom: 0rem;
 }
 
 .admin-review-tags {
@@ -374,15 +374,16 @@
 .admin-preview-area {
   flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  overflow-y: auto;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0.5rem;
+  overflow: hidden;
   background: radial-gradient(
     ellipse at center,
     rgba(var(--color-vault-lavender-rgb), 0.02),
     transparent 70%
   );
+  min-height: 0;
 }
 
 .admin-preview-paper {
@@ -448,6 +449,46 @@
   font-size: 0.7rem;
   color: #999;
   letter-spacing: 0.1em;
+}
+
+/* ───── PDF Embed Preview ───── */
+.admin-preview-embed {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.35rem;
+  overflow: hidden;
+  box-shadow:
+    0 4px 24px rgba(var(--color-vault-black-rgb), 0.5),
+    0 0 40px rgba(var(--color-vault-black-rgb), 0.2);
+  min-height: 0;
+}
+
+.admin-preview-iframe {
+  flex: 1;
+  min-height: 500px;
+  width: 100%;
+  height: 100%;
+}
+
+.admin-preview-overlay-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.35rem 1rem;
+  background: rgba(var(--color-vault-darker-rgb), 0.85);
+  backdrop-filter: blur(8px);
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-vault-gray);
+  text-align: center;
+  border-top: 1px solid rgba(var(--color-vault-lavender-rgb), 0.08);
+  pointer-events: none;
 }
 
 /* ───── Bottom Action Bar ───── */
