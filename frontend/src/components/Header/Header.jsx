@@ -194,7 +194,7 @@ export default function Header() {
                           </div>
                           <div className="user-role-box">
                             <p className="user-role-subpara">Role:
-                              <p className="user-role">{user.role}</p>
+                              <span className="user-role">{user.role}</span>
                             </p>
                           </div>
                           <div className="user-status-box">
