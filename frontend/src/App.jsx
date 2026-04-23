@@ -26,6 +26,7 @@ const SignUpPage = lazy(() => import("./pages/SignUpPage"));
 const FeedbackPage = lazy(() => import("./pages/FeedbackPage"));
 const BookmarksPage = lazy(() => import("./pages/BookmarksPage"));
 const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
+const DonatePage = lazy(() => import("./pages/DonatePage"));
 
 function PageSkeleton() {
   return (
@@ -67,6 +68,7 @@ function useDocumentTitle() {
     else if (pathname === "/admin") title = "Admin — AUS PaperVault";
     else if (pathname === "/feedback") title = "Feedback — AUS PaperVault";
     else if (pathname === "/bookmarks") title = "Saved Papers — AUS PaperVault";
+    else if (pathname === "/donate") title = "Donate — AUS PaperVault";
 
     document.title = title;
   }, [pathname]);
@@ -139,6 +141,7 @@ function AppLayout() {
               <Route path="/feedback" element={<FeedbackPage />} />
               <Route path="/bookmarks" element={<BookmarksPage />} />
               <Route path="/reset-password" element={<ForgotPasswordPage />} />
+              <Route path="/donate" element={<DonatePage />} />
             </Routes>
           </Suspense>
         </AnimatePresence>

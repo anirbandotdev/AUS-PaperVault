@@ -1,9 +1,11 @@
 import { Bell, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import "./FloatingActions.css";
 
 export default function FloatingActions() {
+  const navigate = useNavigate();
   const [showNotificationIndicator, setShowNotificationIndicator] = useState(true);
   const [isHovered, setIsHovered] = useState(null);
 
@@ -34,7 +36,7 @@ export default function FloatingActions() {
       color: "var(--color-vault-danger)",
       hasIndicator: false,
       onClick: () => {
-        // Add functionality here
+        navigate("/donate");
       }
     }
   ];
