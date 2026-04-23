@@ -6,7 +6,7 @@ import {
   MessageSquare,
   Send,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { apiFetch } from "../api/api";
@@ -23,6 +23,13 @@ export default function FeedbackPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      setName(user.username || "");
+      setEmail(user.email || "");
+    }
+  }, [user]);
 
   if (!user) {
     return (
@@ -83,36 +90,62 @@ export default function FeedbackPage() {
       setSubmitting(true);
       setError(null);
       const token = localStorage.getItem("access_token");
-      const data = await apiFetch("/feedback/send", "POST", {
+      // Try editing first
+      const editData = await apiFetch("/feedback/edit", "POST", {
         headers: {
           authorization: `Bearer ${token}`,
         },
         body: {
-          message,
+          editedMessage: message,
         },
       });
-      if (!data.success) {
-        setError("Error in sending feedback");
-        toast.error("Failed to send feedback", {
-          description: "There was a problem sending your feedback. Please try again."
-        });
+
+      if (editData.success) {
+        window.dispatchEvent(new Event("feedbackUpdated"));
         setSubmitting(false);
+        setSubmitted(true);
+        toast.success("Feedback updated", {
+          description: "Your message has been updated."
+        });
+        setMessage("");
         return;
       }
-      notifyFeedbackSubmitted({
-        name: data.username.trim() || "Anonymous",
-        preview: message,
-      });
 
-      window.dispatchEvent(new Event("feedbackUpdated"));
-      setSubmitting(false);
-      setSubmitted(true);
-      toast.success("Feedback target secured", {
-        description: "Your message has been delivered to the dev team."
-      });
-      setName("");
-      setEmail("");
-      setMessage("");
+      if (!editData.success) {
+        // Fallback to sending new feedback
+        const sendData = await apiFetch("/feedback/send", "POST", {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+          body: {
+            message,
+          },
+        });
+
+        if (!sendData.success) {
+          setError("Error in sending feedback");
+          toast.error("Failed to send feedback", {
+            description: "There was a problem sending your feedback. Please try again."
+          });
+          setSubmitting(false);
+          return;
+        }
+
+        notifyFeedbackSubmitted({
+          name: sendData.username?.trim() || user?.username || "Anonymous",
+          preview: message,
+        });
+
+        window.dispatchEvent(new Event("feedbackUpdated"));
+        setSubmitting(false);
+        setSubmitted(true);
+        toast.success("Feedback target secured", {
+          description: "Your message has been delivered to the dev team."
+        });
+        setName(user?.username || "");
+        setEmail(user?.email || "");
+        setMessage("");
+      }
     } catch (err) {
       setError(err.message);
       toast.error("Transmission failed", {
