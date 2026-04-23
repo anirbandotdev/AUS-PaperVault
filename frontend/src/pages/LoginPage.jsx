@@ -55,7 +55,7 @@ export default function LoginPage() {
     try {
       const data = await login(email , password);
       if (!data.success) {
-        setError("Login failed. Please try again.");
+        setError(data.error || data.message);
       } else {
         localStorage.setItem("access_token", data.token);
         const from = location.state?.from?.pathname || "/";

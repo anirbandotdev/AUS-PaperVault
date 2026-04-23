@@ -8,6 +8,7 @@ import {
     generateRefreshToken,
 } from "../utils/generateToken.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
+import EmailVerification from "../models/emailVerification.model.js";
 
 const userRouter = Router();
 
@@ -218,6 +219,38 @@ userRouter.post("/login", async (req, res) => {
     }
 });
 
-userRouter.post("/delete", async (req, res) => {});
+userRouter.post("/reset-password", async (req, res) => {
+    try {
+        const { email, newPassword } = req.body;
+        const user = await User.findOne({ email });
+
+        const data = await EmailVerification.findOne({ email });
+        if (data.isVerified) {
+            user.password = newPassword;
+            await user.save();
+
+            sendSuccess(
+                res,
+                "Password is reset successfully",
+                STATUS_CODES.SUCCESS
+            );
+        } else {
+            sendError(
+                res,
+                "OTP is expired . Verify email again",
+                STATUS_CODES.UNAUTHORIZED,
+                "OTP is expired"
+            );
+        }
+    } catch (err) {
+        console.log("Password rest error: ", err);
+        sendError(
+            res,
+            "Error in reseting password",
+            STATUS_CODES.SERVER_ERROR,
+            err.message
+        );
+    }
+});
 
 export default userRouter;
