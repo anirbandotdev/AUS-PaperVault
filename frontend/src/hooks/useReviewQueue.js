@@ -97,6 +97,34 @@ export default function useReviewQueue() {
     [showFeedback]
   );
 
+  /* ── Update file tags ─────────────────────────────────── */
+  const updateFileTags = useCallback(
+    async (fileId, data) => {
+      try {
+        const token = localStorage.getItem("access_token");
+        const res = await apiFetch(`/files/update/${fileId}`, "PUT", {
+          headers: { Authorization: `Bearer ${token}` },
+          body: JSON.stringify(data),
+        });
+
+        if (res.success) {
+          showFeedback("approved", "File tags updated");
+          // Update the file in local state
+          setPendingFiles((prev) =>
+            prev.map((f) => (f._id === fileId ? { ...f, ...data } : f))
+          );
+        } else {
+          showFeedback("error", res.message || "Update failed");
+        }
+        return res.success;
+      } catch (err) {
+        showFeedback("error", err.message || "Update failed");
+        return false;
+      }
+    },
+    [showFeedback]
+  );
+
   return {
     pendingFiles,
     isLoading,
@@ -105,5 +133,6 @@ export default function useReviewQueue() {
     fetchPending,
     approveFile,
     rejectFile,
+    updateFileTags,
   };
 }

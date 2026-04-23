@@ -133,4 +133,35 @@ fileRouter.get("/pending", authMiddleware, async (req, res) => {
     }
 });
 
+fileRouter.put("/update/:id", authMiddleware, async (req, res) => {
+    try {
+        const { id: fileId } = req.params;
+        const { department, semester, year } = req.body;
+
+        const file = await File.findById(fileId);
+
+        if (!file) {
+            return sendError(res, "File not found", STATUS_CODES.NOT_FOUND);
+        }
+
+        if (department) file.department = department;
+        if (semester) file.semester = semester;
+        if (year) file.year = year;
+
+        await file.save();
+
+        sendSuccess(res, "File updated successfully", STATUS_CODES.SUCCESS, {
+            file,
+        });
+    } catch (err) {
+        console.log(err);
+        sendError(
+            res,
+            "Error in server",
+            STATUS_CODES.SERVER_ERROR,
+            err.message
+        );
+    }
+});
+
 export default fileRouter;

@@ -328,6 +328,83 @@
   color: var(--color-vault-lavender);
 }
 
+.admin-review-edit-icon-btn {
+  background: none;
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
+  color: var(--color-vault-gray);
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.admin-review-edit-icon-btn:hover {
+  background: rgba(var(--color-vault-lavender-rgb), 0.1);
+  color: var(--color-vault-lavender);
+}
+
+.admin-review-tags-edit-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.admin-review-edit-input {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(var(--color-vault-darker-rgb), 0.8);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.2);
+  color: var(--color-vault-text);
+  outline: none;
+  text-transform: uppercase;
+}
+
+.admin-review-edit-input:focus {
+  border-color: var(--color-vault-lavender);
+}
+
+.admin-review-edit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: none;
+  transition: all 0.2s ease;
+}
+
+.admin-review-edit-btn.save {
+  color: var(--color-vault-success);
+  border-color: rgba(74, 222, 128, 0.2);
+  background: rgba(74, 222, 128, 0.05);
+}
+
+.admin-review-edit-btn.save:hover:not(:disabled) {
+  background: rgba(74, 222, 128, 0.15);
+  border-color: rgba(74, 222, 128, 0.4);
+}
+
+.admin-review-edit-btn.cancel {
+  color: var(--color-vault-danger);
+  border-color: rgba(var(--color-vault-danger-rgb), 0.2);
+  background: rgba(var(--color-vault-danger-rgb), 0.05);
+}
+
+.admin-review-edit-btn.cancel:hover:not(:disabled) {
+  background: rgba(var(--color-vault-danger-rgb), 0.15);
+  border-color: rgba(var(--color-vault-danger-rgb), 0.4);
+}
+
+.admin-review-edit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .admin-review-header-right {
   display: flex;
   flex-direction: column;

@@ -18,6 +18,7 @@ export default function ReviewTab({ currentAdmin, allDepartments, semestersData 
     actionFeedback,
     approveFile,
     rejectFile,
+    updateFileTags,
   } = useReviewQueue();
 
   // Keep relative timestamps fresh
@@ -62,6 +63,11 @@ export default function ReviewTab({ currentAdmin, allDepartments, semestersData 
     await rejectFile(fileId);
   };
 
+  const handleUpdateTags = async (fileId, data) => {
+    if (isDemo) return;
+    await updateFileTags(fileId, data);
+  };
+
   /* ── Loading state ──────────────────────────────────── */
   if (isLoading) {
     return (
@@ -93,6 +99,7 @@ export default function ReviewTab({ currentAdmin, allDepartments, semestersData 
               selected={selected}
               currentAdmin={currentAdmin}
               allDepartments={allDepartments}
+              onUpdateTags={handleUpdateTags}
             />
 
             <ReviewPreview selected={selected} />

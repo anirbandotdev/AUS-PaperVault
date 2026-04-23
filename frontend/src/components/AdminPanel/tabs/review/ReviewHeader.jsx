@@ -1,9 +1,42 @@
+import { useState, useEffect } from "react";
 import { queueIdLabel, getDeptName, getDeptShort } from "./reviewUtils";
+import { Pencil, Check, X, Loader2 } from "lucide-react";
 
 /**
  * Header bar above the preview showing file metadata and review context.
  */
-export default function ReviewHeader({ selected, currentAdmin, allDepartments }) {
+export default function ReviewHeader({ selected, currentAdmin, allDepartments, onUpdateTags }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({ department: "", semester: "", year: "" });
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    if (selected) {
+      setEditData({
+        department: selected.department || "",
+        semester: selected.semester || "",
+        year: selected.year || "",
+      });
+      setIsEditing(false);
+    }
+  }, [selected]);
+
+  const handleSave = async () => {
+    if (!onUpdateTags) return;
+    setIsSaving(true);
+    await onUpdateTags(selected._id, editData);
+    setIsSaving(false);
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditData({
+      department: selected.department || "",
+      semester: selected.semester || "",
+      year: selected.year || "",
+    });
+    setIsEditing(false);
+  };
   return (
     <div className="admin-review-header">
       <div className="admin-review-header-left">
@@ -15,17 +48,71 @@ export default function ReviewHeader({ selected, currentAdmin, allDepartments })
           {selected.subject || "Untitled"}
         </h2>
         <div className="admin-review-tags">
-          <span className="admin-review-tag primary">
-            {getDeptShort(selected.department, allDepartments)}-
-            {selected.semester}0{selected.semester}
-          </span>
-          <span className="admin-review-tag">
-            {getDeptName(selected.department, allDepartments)}
-          </span>
-          <span className="admin-review-tag">
-            Semester_{selected.semester}
-          </span>
-          <span className="admin-review-tag">{selected.year}</span>
+          {isEditing ? (
+            <div className="admin-review-tags-edit-form">
+              <select
+                className="admin-review-edit-input"
+                value={editData.department}
+                onChange={(e) => setEditData({ ...editData, department: e.target.value })}
+              >
+                {allDepartments.map((d) => (
+                  <option key={d.id} value={d.id}>{d.name}</option>
+                ))}
+              </select>
+              <select
+                className="admin-review-edit-input"
+                value={editData.semester}
+                onChange={(e) => setEditData({ ...editData, semester: e.target.value })}
+              >
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
+                  <option key={sem} value={sem.toString()}>Semester {sem}</option>
+                ))}
+              </select>
+              <input
+                type="number"
+                className="admin-review-edit-input"
+                value={editData.year}
+                onChange={(e) => setEditData({ ...editData, year: e.target.value })}
+              />
+              <button
+                className="admin-review-edit-btn save"
+                onClick={handleSave}
+                disabled={isSaving}
+                title="Save Tags"
+              >
+                {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
+              </button>
+              <button
+                className="admin-review-edit-btn cancel"
+                onClick={handleCancel}
+                disabled={isSaving}
+                title="Cancel"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          ) : (
+            <>
+              <span className="admin-review-tag primary">
+                {getDeptShort(selected.department, allDepartments)}-
+                {selected.semester}0{selected.semester}
+              </span>
+              <span className="admin-review-tag">
+                {getDeptName(selected.department, allDepartments)}
+              </span>
+              <span className="admin-review-tag">
+                Semester_{selected.semester}
+              </span>
+              <span className="admin-review-tag">{selected.year}</span>
+              <button 
+                className="admin-review-edit-icon-btn" 
+                onClick={() => setIsEditing(true)}
+                title="Edit Tags"
+              >
+                <Pencil size={14} />
+              </button>
+            </>
+          )}
         </div>
       </div>
       <div className="admin-review-header-right">
