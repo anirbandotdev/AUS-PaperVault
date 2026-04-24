@@ -23,6 +23,7 @@ departmentRouter.post("/add", authMiddleware, async (req, res) => {
                 shortName: data.shortName,
                 semesters: data.semesters,
                 color: data.color || "#000",
+                iconName: data.iconName || "Monitor",
                 years: data.years,
             });
 
@@ -46,10 +47,6 @@ departmentRouter.get("/list", authMiddleware, async (req, res) => {
             req.user.role == ROLES.SUPER_ADMIN ||
             req.user.role == ROLES.MODERATOR
         ) {
-            const { success, data } = departmentSchema.safeParse(req.body);
-            if (!success) {
-                return sendError(res, "Invalid body", STATUS_CODES.BAD_REQUEST);
-            }
             const departments = await Department.find({});
             sendSuccess(
                 res,
@@ -64,7 +61,86 @@ departmentRouter.get("/list", authMiddleware, async (req, res) => {
         }
     } catch (err) {
         console.log(err);
-        sendError(res, "Error in creating department", err.message);
+        sendError(res, "Error in fetching departments", err.message);
+    }
+});
+
+departmentRouter.delete("/delete/:id", authMiddleware, async (req, res) => {
+    try {
+        if (
+            req.user.role == ROLES.SUPER_ADMIN ||
+            req.user.role == ROLES.MODERATOR
+        ) {
+            const { id } = req.params;
+            const department = await Department.findByIdAndDelete(id);
+            
+            if (!department) {
+                return sendError(
+                    res,
+                    "Department not found",
+                    STATUS_CODES.NOT_FOUND
+                );
+            }
+
+            sendSuccess(
+                res,
+                "Department deleted successfully",
+                STATUS_CODES.SUCCESS
+            );
+        } else {
+            sendError(res, "Not authorized", STATUS_CODES.UNAUTHORIZED);
+        }
+    } catch (err) {
+        console.log(err);
+        sendError(res, "Error in deleting department", err.message);
+    }
+});
+
+departmentRouter.put("/update/:id", authMiddleware, async (req, res) => {
+    try {
+        if (
+            req.user.role == ROLES.SUPER_ADMIN ||
+            req.user.role == ROLES.MODERATOR
+        ) {
+            const { success, data } = departmentSchema.safeParse(req.body);
+            if (!success) {
+                return sendError(res, "Invalid body", STATUS_CODES.BAD_REQUEST);
+            }
+
+            const { id } = req.params;
+            const department = await Department.findByIdAndUpdate(
+                id,
+                {
+                    fullName: data.fullName,
+                    shortName: data.shortName,
+                    semesters: data.semesters,
+                    color: data.color || "#000",
+                    iconName: data.iconName || "Monitor",
+                    years: data.years,
+                },
+                { new: true }
+            );
+
+            if (!department) {
+                return sendError(
+                    res,
+                    "Department not found",
+                    STATUS_CODES.NOT_FOUND
+                );
+            }
+
+            sendSuccess(
+                res,
+                "Department updated successfully",
+                STATUS_CODES.SUCCESS,
+                { department }
+            );
+        } else {
+            sendError(res, "Not authorized", STATUS_CODES.UNAUTHORIZED);
+        }
+    } catch (err) {
+        console.log(err);
+        sendError(res, "Error in updating department", err.message);
     }
 });
 
