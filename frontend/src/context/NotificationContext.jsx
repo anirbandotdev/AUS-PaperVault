@@ -15,7 +15,7 @@ export const NotificationProvider = ({ children }) => {
       const resData = await response.json();
       
       if (resData.success) {
-        const fetchedNotifs = Array.isArray(resData.data) ? resData.data : [];
+        const fetchedNotifs = Array.isArray(resData.notifications) ? resData.notifications : [];
         setNotifications(fetchedNotifs);
         
         // Calculate unread count based on localStorage
