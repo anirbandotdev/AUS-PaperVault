@@ -20,7 +20,6 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
     shortName: "",
     color: "#92bcea",
     semesters: 8,
-    years: 5,
   });
 
   const [editDeptForm, setEditDeptForm] = useState({
@@ -28,10 +27,9 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
     shortName: "",
     color: "#92bcea",
     semesters: 8,
-    years: 5,
   });
 
-  const handleAddDepartment = (e) => {
+  const handleAddDepartment = async (e) => {
     e.preventDefault();
     setDeptError("");
     setDeptSuccess("");
@@ -46,20 +44,20 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
     }
 
     try {
-      const deptId = newDeptForm.name.toLowerCase().replace(/\s+/g, "-");
+      const fullName = newDeptForm.name.toLowerCase().replace(/\s+/g, "-");
       const semesterCount = parseInt(newDeptForm.semesters) || 8;
-      const yearsCount = parseInt(newDeptForm.years) || 5;
 
-      addDepartment({
-        id: deptId,
-        name: newDeptForm.name,
+      const success = await addDepartment({
+        fullName: newDeptForm.name,
         shortName: newDeptForm.shortName.toUpperCase(),
         color: newDeptForm.color,
         semesterCount,
-        yearsCount,
       });
-
-      setAllDepartments(getDepartments());
+      if(!success) {
+        throw new Error("Error in adding department")
+      }
+      const depts = await getDepartments()
+      setAllDepartments(depts);
       window.dispatchEvent(new Event("departmentsUpdated"));
 
       notifySuperAdminEvent({
@@ -74,7 +72,6 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
         shortName: "",
         color: "#92bcea",
         semesters: 8,
-        years: 5,
       });
       setShowAddDeptForm(false);
       setDeptSuccess("Department added successfully! ✓");
@@ -92,7 +89,6 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
       shortName: dept.shortName,
       color: dept.color,
       semesters: dept.semesterCount || 8,
-      years: dept.yearsCount || 5,
     });
     setShowEditForm(true);
     setDeptError("");
@@ -121,7 +117,6 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
             shortName: editDeptForm.shortName.toUpperCase(),
             color: editDeptForm.color,
             semesterCount: parseInt(editDeptForm.semesters) || 8,
-            yearsCount: parseInt(editDeptForm.years) || 5,
           };
         }
         return dept;
@@ -161,7 +156,6 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
       shortName: "",
       color: "#92bcea",
       semesters: 8,
-      years: 5,
     });
     setDeptError("");
   };
