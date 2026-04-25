@@ -169,9 +169,17 @@ departmentRouter.put("/update/:id", authMiddleware, async (req, res) => {
     }
 });
 
-departmentRouter.post("/subject/:action", async (req, res) => {
+departmentRouter.post("/subject/:action", authMiddleware, async (req, res) => {
+    if (![ROLES.MODERATOR, ROLES.MODERATOR].includes(req.user.role)) {
+        return sendError(
+            res,
+            "Only a super admin or a moderator can add or delete subject",
+            STATUS_CODES.UNAUTHORIZED
+        );
+    }
+
     const { action } = req.params;
-    if (action != "add" || action != "delete") {
+    if (action != "add" && action != "delete") {
         return sendError(
             res,
             "Invalid action in the params",
@@ -187,7 +195,7 @@ departmentRouter.post("/subject/:action", async (req, res) => {
             return sendError(res, error.message, STATUS_CODES.BAD_REQUEST);
         }
 
-        const dept = await Department.findById(deptId);
+        const dept = await Department.findById(data.deptId);
 
         if (!dept) {
             return sendError(
@@ -198,10 +206,10 @@ departmentRouter.post("/subject/:action", async (req, res) => {
         }
 
         if (action == "delete") {
-            const subjectIndex = dept.semesters[data.semester].indexOf(
+            const subjectIndex = Object.entries(dept.semesters)[data.semester].indexOf(
                 data.subject
             );
-            const ret = dept.semesters[data.semester].splice(subjectIndex, 1);
+            const ret = Object.entries(dept.semesters)[data.semester].splice(subjectIndex, 1);
             if (ret == -1) {
                 return sendError(
                     res,
@@ -212,16 +220,18 @@ departmentRouter.post("/subject/:action", async (req, res) => {
             sendSuccess(
                 res,
                 "Subject deleted successfully",
-                STATUS_CODES.SUCCESS
+                STATUS_CODES.SUCCESS,
+                { department: dept }
             );
         } else {
-            dept.semesters[data.semester].push(data.subject);
+            Object.fromEntries(dept.semesters)[data.semester].push(data.subject);
 
             await dept.save();
             sendSuccess(
                 res,
                 "Subject added successfully",
-                STATUS_CODES.SUCCESS
+                STATUS_CODES.SUCCESS,
+                { department: dept }
             );
         }
     } catch (err) {
