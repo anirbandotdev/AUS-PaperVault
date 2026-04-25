@@ -1,4 +1,4 @@
-import { ArrowRight, FileText, Search, X } from "lucide-react";
+import { ArrowRight, ArrowUpDown, FileText, Search, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,12 +11,15 @@ export default function DepartmentGrid() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [sortBy, setSortBy] = useState("az");
+  const [sortOpen, setSortOpen] = useState(false);
   const searchRef = useRef(null);
+  const sortRef = useRef(null);
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
   // Filter departments based on search query
-  const filteredDepartments = departments.filter((dept) => {
+  const filtered = departments.filter((dept) => {
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase();
     return (
@@ -24,6 +27,22 @@ export default function DepartmentGrid() {
       dept.shortName.toLowerCase().includes(q) ||
       (dept.id && dept.id.toLowerCase().includes(q))
     );
+  });
+
+  // Sort departments based on selected sort option
+  const filteredDepartments = [...filtered].sort((a, b) => {
+    switch (sortBy) {
+      case "newest":
+        return (b._id || "").localeCompare(a._id || "");
+      case "oldest":
+        return (a._id || "").localeCompare(b._id || "");
+      case "az":
+        return a.name.localeCompare(b.name);
+      case "za":
+        return b.name.localeCompare(a.name);
+      default:
+        return 0;
+    }
   });
 
   const showDropdown = isFocused && searchQuery.trim().length > 0;
@@ -58,11 +77,14 @@ export default function DepartmentGrid() {
     [showDropdown, filteredDepartments, highlightedIndex, navigate],
   );
 
-  // Close dropdown on outside click
+  // Close dropdowns on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
         setIsFocused(false);
+      }
+      if (sortRef.current && !sortRef.current.contains(e.target)) {
+        setSortOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -92,32 +114,33 @@ export default function DepartmentGrid() {
           </p>
         </div>
 
-        {/* ═══════ SEARCH BAR ═══════ */}
-        <div className="dept-search-wrapper" ref={searchRef}>
-          <div className={`dept-search-bar ${isFocused ? "focused" : ""}`}>
-            <Search size={16} className="dept-search-icon" />
-            <input
-              ref={inputRef}
-              type="text"
-              className="dept-search-input"
-              placeholder="Search departments... (e.g. CSE, Physics)"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={() => setIsFocused(true)}
-              onKeyDown={handleSearchKeyDown}
-              id="department-search"
-              autoComplete="off"
-            />
-            {searchQuery && (
-              <button
-                className="dept-search-clear"
-                onClick={clearSearch}
-                title="Clear search"
-              >
-                <X size={14} />
-              </button>
-            )}
-          </div>
+        {/* ═══════ SEARCH + SORT ROW ═══════ */}
+        <div className="dept-controls-row">
+          <div className="dept-search-wrapper" ref={searchRef}>
+            <div className={`dept-search-bar ${isFocused ? "focused" : ""}`}>
+              <Search size={16} className="dept-search-icon" />
+              <input
+                ref={inputRef}
+                type="text"
+                className="dept-search-input"
+                placeholder="Search departments... (e.g. CSE, Physics)"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setIsFocused(true)}
+                onKeyDown={handleSearchKeyDown}
+                id="department-search"
+                autoComplete="off"
+              />
+              {searchQuery && (
+                <button
+                  className="dept-search-clear"
+                  onClick={clearSearch}
+                  title="Clear search"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
 
           {/* ═══════ SEARCH DROPDOWN ═══════ */}
           {showDropdown && (
@@ -181,6 +204,47 @@ export default function DepartmentGrid() {
               )}
             </div>
           )}
+          </div>
+
+          {/* ═══════ SORT DROPDOWN ═══════ */}
+          <div className="dept-sort-wrapper" ref={sortRef}>
+            <button
+              className={`dept-sort-btn ${sortOpen ? "active" : ""}`}
+              onClick={() => setSortOpen((prev) => !prev)}
+              title="Sort departments"
+              id="department-sort"
+            >
+              <ArrowUpDown size={15} />
+              <span className="dept-sort-label">
+                {sortBy === "newest" && "Newest"}
+                {sortBy === "oldest" && "Oldest"}
+                {sortBy === "az" && "A → Z"}
+                {sortBy === "za" && "Z → A"}
+              </span>
+            </button>
+            {sortOpen && (
+              <div className="dept-sort-dropdown animate-slideUp">
+                {[
+                  { value: "az", label: "A → Z" },
+                  { value: "za", label: "Z → A" },
+                  { value: "newest", label: "Newest Added" },
+                  { value: "oldest", label: "Oldest Added" },
+                ].map((opt) => (
+                  <button
+                    key={opt.value}
+                    className={`dept-sort-option ${sortBy === opt.value ? "selected" : ""}`}
+                    onClick={() => {
+                      setSortBy(opt.value);
+                      setSortOpen(false);
+                    }}
+                  >
+                    {opt.label}
+                    {sortBy === opt.value && <span className="dept-sort-check">✓</span>}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* ═══════ DEPARTMENT GRID ═══════ */}
