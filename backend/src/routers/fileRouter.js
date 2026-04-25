@@ -175,4 +175,111 @@ fileRouter.put("/update/:id", authMiddleware, async (req, res) => {
     }
 });
 
+// ─── Analytics Aggregation ──────────────────────────────────
+fileRouter.get("/analytics", authMiddleware, async (req, res) => {
+    try {
+        // Dynamic imports to avoid circular deps
+        const User = (await import("../models/user.model.js")).default;
+        const Feedback = (await import("../models/feedback.model.js")).default;
+        const Department = (await import("../models/department.model.js")).default;
+
+        // ── Core counts (parallel) ──
+        const [totalUploads, pendingReview, approved, totalUsers, totalFeedback, departments] =
+            await Promise.all([
+                File.countDocuments(),
+                File.countDocuments({ isApproved: false }),
+                File.countDocuments({ isApproved: true }),
+                User.countDocuments(),
+                Feedback.countDocuments(),
+                Department.find({}).lean(),
+            ]);
+
+        // ── Total downloads ──
+        const dlAgg = await File.aggregate([
+            { $group: { _id: null, total: { $sum: "$downloadCount" } } },
+        ]);
+        const totalDownloads = dlAgg.length > 0 ? dlAgg[0].total : 0;
+
+        // ── Papers per department ──
+        const deptAgg = await File.aggregate([
+            { $match: { isApproved: true } },
+            { $group: { _id: "$department", papers: { $sum: 1 } } },
+        ]);
+
+        // Map aggregation results to department shortNames
+        const departmentStats = departments.map((dept) => {
+            const match = deptAgg.find((d) => d._id === dept.shortName);
+            return {
+                name: dept.shortName,
+                fullName: dept.fullName,
+                papers: match ? match.papers : 0,
+            };
+        });
+
+        // ── Weekly upload distribution (last 30 days) ──
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+        const weeklyAgg = await File.aggregate([
+            { $match: { createdAt: { $gte: thirtyDaysAgo } } },
+            {
+                $group: {
+                    _id: { $dayOfWeek: "$createdAt" }, // 1=Sun … 7=Sat
+                    uploads: { $sum: 1 },
+                },
+            },
+            { $sort: { _id: 1 } },
+        ]);
+
+        const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const weeklyTraffic = dayNames.map((name, i) => {
+            const match = weeklyAgg.find((d) => d._id === i + 1);
+            return { name, uploads: match ? match.uploads : 0 };
+        });
+
+        // ── Recent uploads (last 5) ──
+        const recentUploads = await File.find()
+            .sort({ createdAt: -1 })
+            .limit(5)
+            .populate("uploadedBy", "username firstName lastName")
+            .lean();
+
+        const recentFormatted = recentUploads.map((f) => ({
+            id: f._id,
+            fileName: f.fileName,
+            department: f.department,
+            semester: f.semester,
+            subject: f.subject,
+            year: f.year,
+            isApproved: f.isApproved,
+            uploadedBy: f.uploadedBy
+                ? f.uploadedBy.username || `${f.uploadedBy.firstName} ${f.uploadedBy.lastName}`
+                : "Unknown",
+            createdAt: f.createdAt,
+        }));
+
+        return sendSuccess(res, "Analytics fetched successfully", STATUS_CODES.SUCCESS, {
+            analytics: {
+                totalUploads,
+                pendingReview,
+                approved,
+                totalDownloads,
+                totalUsers,
+                totalFeedback,
+                departmentStats,
+                weeklyTraffic,
+                recentUploads: recentFormatted,
+            },
+        });
+    } catch (err) {
+        console.error("Analytics error:", err);
+        return sendError(
+            res,
+            "Failed to fetch analytics",
+            STATUS_CODES.SERVER_ERROR,
+            err.message
+        );
+    }
+});
+
 export default fileRouter;
