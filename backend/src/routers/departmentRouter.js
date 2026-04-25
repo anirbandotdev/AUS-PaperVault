@@ -45,24 +45,17 @@ departmentRouter.post("/add", authMiddleware, async (req, res) => {
     }
 });
 
-departmentRouter.get("/list", authMiddleware, async (req, res) => {
+departmentRouter.get("/list", async (req, res) => {
     try {
-        if (
-            req.user.role == ROLES.SUPER_ADMIN ||
-            req.user.role == ROLES.MODERATOR
-        ) {
-            const departments = await Department.find({});
-            sendSuccess(
-                res,
-                "Departments fetched successfully",
-                STATUS_CODES.SUCCESS,
-                {
-                    departments,
-                }
-            );
-        } else {
-            sendError(res, "Not authorized", STATUS_CODES.UNAUTHORIZED);
-        }
+        const departments = await Department.find({});
+        sendSuccess(
+            res,
+            "Departments fetched successfully",
+            STATUS_CODES.SUCCESS,
+            {
+                departments,
+            }
+        );
     } catch (err) {
         console.log(err);
         sendError(res, "Error in fetching departments", err.message);
@@ -206,10 +199,13 @@ departmentRouter.post("/subject/:action", authMiddleware, async (req, res) => {
         }
 
         if (action == "delete") {
-            const subjectIndex = Object.entries(dept.semesters)[data.semester].indexOf(
-                data.subject
+            const subjectIndex = Object.entries(dept.semesters)[
+                data.semester
+            ].indexOf(data.subject);
+            const ret = Object.entries(dept.semesters)[data.semester].splice(
+                subjectIndex,
+                1
             );
-            const ret = Object.entries(dept.semesters)[data.semester].splice(subjectIndex, 1);
             if (ret == -1) {
                 return sendError(
                     res,
@@ -224,7 +220,9 @@ departmentRouter.post("/subject/:action", authMiddleware, async (req, res) => {
                 { department: dept }
             );
         } else {
-            Object.fromEntries(dept.semesters)[data.semester].push(data.subject);
+            Object.fromEntries(dept.semesters)[data.semester].push(
+                data.subject
+            );
 
             await dept.save();
             sendSuccess(
