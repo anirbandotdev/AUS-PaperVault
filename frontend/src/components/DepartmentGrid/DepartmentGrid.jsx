@@ -20,9 +20,8 @@ export default function DepartmentGrid() {
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase();
     return (
-      dept.name.toLowerCase().includes(q) ||
-      dept.shortName.toLowerCase().includes(q) ||
-      (dept.id && dept.id.toLowerCase().includes(q))
+      dept.fullName.toLowerCase().includes(q) ||
+      dept.shortName.toLowerCase().includes(q)
     );
   });
 
@@ -46,7 +45,7 @@ export default function DepartmentGrid() {
         e.preventDefault();
         const dept = filteredDepartments[highlightedIndex];
         if (dept) {
-          navigate(`/department/${dept.id || dept.shortName?.toLowerCase()}`);
+          navigate(`/department/${dept.shortName?.toLowerCase() || dept.fullName}`);
           setSearchQuery("");
           inputRef.current?.blur();
         }
@@ -133,8 +132,8 @@ export default function DepartmentGrid() {
                     const paperCount = allPapers.filter(p => p.department === dept.id).length;
                     return (
                       <Link
-                        to={`/department/${dept.id}`}
-                        key={dept.id}
+                        to={`/department/${dept.shortName}`}
+                        key={dept._id}
                         className={`dept-search-result ${highlightedIndex === index ? "highlighted" : ""}`}
                         onClick={() => {
                           setSearchQuery("");
@@ -190,7 +189,7 @@ export default function DepartmentGrid() {
             const paperCount = allPapers.filter(p => p.department === dept.id).length;
             return (
               <Tilt
-                key={dept.id}
+                key={dept._id}
                 glareEnable={true}
                 glareMaxOpacity={0.3}
                 glareColor="#afb3f7"
@@ -203,7 +202,7 @@ export default function DepartmentGrid() {
                 style={{ height: "100%", borderRadius: "12px" }} // Ensures the tilt container takes full height and has rounded corners
               >
                 <Link
-                  to={`/department/${dept.id}`}
+                  to={`/department/${dept.shortName}`}
                   className="dept-card animate-slideUp"
                   style={{
                     "--card-accent": dept.color,
