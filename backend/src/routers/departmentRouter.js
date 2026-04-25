@@ -163,7 +163,7 @@ departmentRouter.put("/update/:id", authMiddleware, async (req, res) => {
 });
 
 departmentRouter.post("/subject/:action", authMiddleware, async (req, res) => {
-    if (![ROLES.MODERATOR, ROLES.MODERATOR].includes(req.user.role)) {
+    if (![ROLES.MODERATOR, ROLES.SUPER_ADMIN].includes(req.user.role)) {
         return sendError(
             res,
             "Only a super admin or a moderator can add or delete subject",
@@ -172,7 +172,7 @@ departmentRouter.post("/subject/:action", authMiddleware, async (req, res) => {
     }
 
     const { action } = req.params;
-    if (action != "add" && action != "delete") {
+    if (action != "add" && action != "delete" && action != "edit") {
         return sendError(
             res,
             "Invalid action in the params",
@@ -199,19 +199,19 @@ departmentRouter.post("/subject/:action", authMiddleware, async (req, res) => {
         }
 
         if (action == "delete") {
-            const subjectIndex = Object.entries(dept.semesters)[
+            const subjectIndex = Object.fromEntries(dept.semesters)[
                 data.semester
             ].indexOf(data.subject);
-            const ret = Object.entries(dept.semesters)[data.semester].splice(
-                subjectIndex,
-                1
-            );
-            if (ret == -1) {
+            if (subjectIndex == -1) {
                 return sendError(
                     res,
                     `${data.subject} doesnot exist in semester ${data.semester}`
                 );
             }
+            const ret = Object.fromEntries(dept.semesters)[
+                data.semester
+            ].splice(subjectIndex, 1);
+
             await dept.save();
             sendSuccess(
                 res,
@@ -219,7 +219,7 @@ departmentRouter.post("/subject/:action", authMiddleware, async (req, res) => {
                 STATUS_CODES.SUCCESS,
                 { department: dept }
             );
-        } else {
+        } else if (action == "add") {
             Object.fromEntries(dept.semesters)[data.semester].push(
                 data.subject
             );
@@ -228,6 +228,27 @@ departmentRouter.post("/subject/:action", authMiddleware, async (req, res) => {
             sendSuccess(
                 res,
                 "Subject added successfully",
+                STATUS_CODES.SUCCESS,
+                { department: dept }
+            );
+        } else if (action == "edit") {
+            const subjectIndex = Object.fromEntries(dept.semesters)[
+                data.semester
+            ].indexOf(data.subject);
+
+            if (subjectIndex == -1) {
+                return sendError(
+                    res,
+                    `${data.subject} doesnot exist in semester ${data.semester}`
+                );
+            }
+
+            Object.fromEntries(dept.semesters)[data.semester][subjectIndex] = data.newSubject;
+
+            await dept.save();
+            sendSuccess(
+                res,
+                "Subject edited successfully",
                 STATUS_CODES.SUCCESS,
                 { department: dept }
             );
