@@ -15,3 +15,10 @@ export const departmentUpdateSchema = z.object({
     color: z.string().optional(),
     semesterCount: z.number().optional(),
 });
+
+
+export const departmentSubjectSchema = z.object({
+    deptId: z.string(),
+    semester: z.enum(["1" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9" , "10" , "11" , "12" , "13" , "14" , "15"]),
+    subject: z.string()
+})

@@ -3,7 +3,11 @@ import { authMiddleware } from "../middleware/auth.middleware.js";
 import { ROLES } from "../roles.js";
 import { sendError, sendSuccess } from "../utils/apiResponse.js";
 import Department from "../models/department.model.js";
-import { departmentSchema, departmentUpdateSchema } from "../types/departmentSchema.js";
+import {
+    departmentSchema,
+    departmentSubjectSchema,
+    departmentUpdateSchema,
+} from "../types/departmentSchema.js";
 import { STATUS_CODES } from "../utils/statusCodes.js";
 
 const departmentRouter = Router();
@@ -73,7 +77,7 @@ departmentRouter.delete("/delete/:id", authMiddleware, async (req, res) => {
         ) {
             const { id } = req.params;
             const department = await Department.findByIdAndDelete(id);
-            
+
             if (!department) {
                 return sendError(
                     res,
@@ -102,14 +106,16 @@ departmentRouter.put("/update/:id", authMiddleware, async (req, res) => {
             req.user.role == ROLES.SUPER_ADMIN ||
             req.user.role == ROLES.MODERATOR
         ) {
-            const { success, data } = departmentUpdateSchema.safeParse(req.body);
+            const { success, data } = departmentUpdateSchema.safeParse(
+                req.body
+            );
             if (!success) {
                 return sendError(res, "Invalid body", STATUS_CODES.BAD_REQUEST);
             }
 
             const { id } = req.params;
             const currentDept = await Department.findById(id);
-            
+
             if (!currentDept) {
                 return sendError(
                     res,
@@ -126,8 +132,12 @@ departmentRouter.put("/update/:id", authMiddleware, async (req, res) => {
 
             // Only update semesters if they're empty or if semesterCount is being explicitly set
             if (data.semesterCount) {
-                const hasSubjects = currentDept.semesters && Object.values(currentDept.semesters).some(arr => arr && arr.length > 0);
-                
+                const hasSubjects =
+                    currentDept.semesters &&
+                    Object.values(currentDept.semesters).some(
+                        (arr) => arr && arr.length > 0
+                    );
+
                 if (!hasSubjects) {
                     // Create empty semesters structure
                     const newSemesters = {};
@@ -137,7 +147,7 @@ departmentRouter.put("/update/:id", authMiddleware, async (req, res) => {
                     updateData.semesters = newSemesters;
                 }
             }
-            
+
             const department = await Department.findByIdAndUpdate(
                 id,
                 updateData,
@@ -156,6 +166,72 @@ departmentRouter.put("/update/:id", authMiddleware, async (req, res) => {
     } catch (err) {
         console.log(err);
         sendError(res, "Error in updating department", err.message);
+    }
+});
+
+departmentRouter.post("/subject/:action", async (req, res) => {
+    const { action } = req.params;
+    if (action != "add" || action != "delete") {
+        return sendError(
+            res,
+            "Invalid action in the params",
+            STATUS_CODES.BAD_REQUEST
+        );
+    }
+    try {
+        const { success, data, error } = departmentSubjectSchema.safeParse(
+            req.body
+        );
+
+        if (!success) {
+            return sendError(res, error.message, STATUS_CODES.BAD_REQUEST);
+        }
+
+        const dept = await Department.findById(deptId);
+
+        if (!dept) {
+            return sendError(
+                res,
+                "No department found with the id",
+                STATUS_CODES.NOT_FOUND
+            );
+        }
+
+        if (action == "delete") {
+            const subjectIndex = dept.semesters[data.semester].indexOf(
+                data.subject
+            );
+            const ret = dept.semesters[data.semester].splice(subjectIndex, 1);
+            if (ret == -1) {
+                return sendError(
+                    res,
+                    `${data.subject} doesnot exist in semester ${data.semester}`
+                );
+            }
+            await dept.save();
+            sendSuccess(
+                res,
+                "Subject deleted successfully",
+                STATUS_CODES.SUCCESS
+            );
+        } else {
+            dept.semesters[data.semester].push(data.subject);
+
+            await dept.save();
+            sendSuccess(
+                res,
+                "Subject added successfully",
+                STATUS_CODES.SUCCESS
+            );
+        }
+    } catch (err) {
+        console.log(err);
+        sendError(
+            res,
+            `Error in subject ${action}`,
+            STATUS_CODES.SERVER_ERROR,
+            err.message
+        );
     }
 });
 
